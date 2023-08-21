@@ -5,11 +5,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
+import { PlayerCardComponent } from './player-card/player-card.component';
 
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
-import { PlayerCardComponent } from './player-card/player-card.component';
-
+import {MatInputModule} from '@angular/material/input';
 
 
 @NgModule({
@@ -23,7 +23,8 @@ import { PlayerCardComponent } from './player-card/player-card.component';
     AppRoutingModule,
     HttpClientModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

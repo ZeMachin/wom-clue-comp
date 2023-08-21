@@ -52,4 +52,10 @@ export class AppComponent {
   getClueScore(gains: Gains): number {
     return gains.beginner * CLUE_WEIGHTS.beginner + gains.easy * CLUE_WEIGHTS.easy + gains.medium * CLUE_WEIGHTS.medium + gains.hard * CLUE_WEIGHTS.hard + gains.elite * CLUE_WEIGHTS.elite + gains.master * CLUE_WEIGHTS.master;
   }
+
+  numberTopPlayersValueChange($event: any) {
+    // console.log('event:', $event);
+    // console.log('value:', $event.target.value)
+    this.numberTopPlayers = $event.target.value;
+  }
 }
