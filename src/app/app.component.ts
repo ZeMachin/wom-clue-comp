@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { WiseOldManService } from './services/wise-old-man.service';
 import { PlayerGains } from './models/player-gains.model';
+import { Gains, HiScore } from './models/hiscore.model';
 
 const CLUE_WEIGHTS = {
   beginner: 0.5,
@@ -20,18 +21,19 @@ export class AppComponent {
   constructor(private WOMService: WiseOldManService) { }
   competitionId: number = 29203;
   updatePlayers = false;
-  numberTopPlayers = 10;
+  numberTopPlayers = 3;
   hiscores: HiScore[] = [];
 
   async updateStats() {
     const competition = await this.WOMService.getCompetition(this.competitionId);
     const startDate = competition.startsAt.toString();
     const endDate = new Date().toISOString();
-    const playerNames: string[] = competition.participations.map((p) => p.player.username.replace(' ', '_'));
+    const playerNames: { username: string, displayName: string }[] = competition.participations.map((p) => { return { username: p.player.username.replace(' ', '_'), displayName: p.player.displayName } });
 
     this.hiscores = playerNames.slice(0, this.numberTopPlayers).map((p) => {
       return {
-        username: p
+        username: p.username,
+        displayName: p.displayName
       }
     });
 
@@ -58,19 +60,4 @@ export class AppComponent {
   getClueScore(gains: Gains): number {
     return gains.beginner * CLUE_WEIGHTS.beginner + gains.easy * CLUE_WEIGHTS.easy + gains.medium * CLUE_WEIGHTS.medium + gains.hard * CLUE_WEIGHTS.hard + gains.elite * CLUE_WEIGHTS.elite + gains.master * CLUE_WEIGHTS.master;
   }
-}
-
-interface HiScore {
-  username: string;
-  gains?: Gains
-}
-
-interface Gains {
-  beginner: number;
-  easy: number;
-  medium: number;
-  hard: number;
-  elite: number;
-  master: number;
-  total?: number;
 }
