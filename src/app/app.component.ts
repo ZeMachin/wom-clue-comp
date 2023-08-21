@@ -2,15 +2,7 @@ import { Component } from '@angular/core';
 import { WiseOldManService } from './services/wise-old-man.service';
 import { PlayerGains } from './models/player-gains.model';
 import { Gains, HiScore } from './models/hiscore.model';
-
-const CLUE_WEIGHTS = {
-  beginner: 0.5,
-  easy: 0.5,
-  medium: 1,
-  hard: 3,
-  elite: 4,
-  master: 6
-}
+import { CLUE_WEIGHTS } from './shared/constants';
 
 @Component({
   selector: 'app-root',
