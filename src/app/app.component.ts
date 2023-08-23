@@ -31,7 +31,7 @@ export class AppComponent {
 
     this.hiscores.forEach(async (h) => h.gains = this.detailsToGains(await this.WOMService.getPlayerDetails(h.username, startDate, endDate)));
 
-    setTimeout(() => this.hiscores.sort((h1, h2) => h2.gains?.total! - h1.gains?.total!), 500);
+    setInterval(() => this.hiscores.sort((h1, h2) => h2.gains?.total! - h1.gains?.total!), 1000);
   }
 
   detailsToGains(playerDetails: PlayerGains): Gains {
