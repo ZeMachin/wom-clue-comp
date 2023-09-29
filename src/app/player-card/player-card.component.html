@@ -1,26 +1,47 @@
-<div *ngIf="!expanded" class="card-collapsed" (click)="toggleExpanded()">
-  <b class="text">{{index+1}}. {{hiscore.displayName}} - {{hiscore.gains?.total }} points</b>
+<!-- <div *ngIf="!expanded" class="card-collapsed" (click)="toggleExpanded()">
+  <b class="text">{{index+1}}. {{hiscore.displayName}} - {{hiscore.clueGains?.total }} points</b>
 </div>
 <div *ngIf="expanded" class="card-expanded" (click)="toggleExpanded()">
-  <b class="text">{{index+1}}. {{hiscore.displayName}} - {{hiscore.gains?.total }} points</b>
-  <ul *ngIf="hiscore.gains">
+  <b class="text">{{index+1}}. {{hiscore.displayName}} - {{hiscore.clueGains?.total }} points</b>
+  <ul *ngIf="hiscore.clueGains">
     <li>
-      beginners: {{hiscore.gains.beginner}} ({{hiscore.gains.beginner * CLUE_WEIGHTS.beginner}} points)
+      beginners: {{hiscore.clueGains.beginner}} ({{hiscore.clueGains.beginner * CLUE_WEIGHTS.beginner}} points)
     </li>
     <li>
-      easies: {{hiscore.gains.easy}} ({{hiscore.gains.easy * CLUE_WEIGHTS.easy}} points)
+      easies: {{hiscore.clueGains.easy}} ({{hiscore.clueGains.easy * CLUE_WEIGHTS.easy}} points)
     </li>
     <li>
-      mediums: {{hiscore.gains.medium}} ({{hiscore.gains.medium * CLUE_WEIGHTS.medium}} points)
+      mediums: {{hiscore.clueGains.medium}} ({{hiscore.clueGains.medium * CLUE_WEIGHTS.medium}} points)
     </li>
     <li>
-      hards: {{hiscore.gains.hard}} ({{hiscore.gains.hard * CLUE_WEIGHTS.hard}} points)
+      hards: {{hiscore.clueGains.hard}} ({{hiscore.clueGains.hard * CLUE_WEIGHTS.hard}} points)
     </li>
     <li>
-      elites: {{hiscore.gains.elite}} ({{hiscore.gains.elite * CLUE_WEIGHTS.elite}} points)
+      elites: {{hiscore.clueGains.elite}} ({{hiscore.clueGains.elite * CLUE_WEIGHTS.elite}} points)
     </li>
     <li>
-      masters: {{hiscore.gains.master}} ({{hiscore.gains.master * CLUE_WEIGHTS.master}} points)
+      masters: {{hiscore.clueGains.master}} ({{hiscore.clueGains.master * CLUE_WEIGHTS.master}} points)
+    </li>
+  </ul>
+</div> -->
+
+<div *ngIf="!expanded" class="card-collapsed" (click)="toggleExpanded()">
+  <b class="text">{{index+1}}. {{hiscore.displayName}} - {{hiscore.clueGains?.total }} points</b>
+</div>
+<div *ngIf="expanded" class="card-expanded" (click)="toggleExpanded()">
+  <b class="text">{{index+1}}. {{hiscore.displayName}} - {{hiscore.clueGains?.total }} points</b>
+  <ul *ngIf="hiscore.DT2Gains">
+    <li>
+      Vardorvis: {{hiscore.DT2Gains.vardorvis}} ({{hiscore.DT2Gains.vardorvis * DT2_WEIGHTS.vardorvis}} points)
+    </li>
+    <li>
+      Duke Sucellus: {{hiscore.DT2Gains.duke}} ({{hiscore.DT2Gains.duke * DT2_WEIGHTS.duke}} points)
+    </li>
+    <li>
+      The Leviathan: {{hiscore.DT2Gains.leviathan}} ({{hiscore.DT2Gains.leviathan * DT2_WEIGHTS.leviathan}} points)
+    </li>
+    <li>
+      The Whisperer: {{hiscore.DT2Gains.whisperer}} ({{hiscore.DT2Gains.whisperer * DT2_WEIGHTS.whisperer}} points)
     </li>
   </ul>
 </div>

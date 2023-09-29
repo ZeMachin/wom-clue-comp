@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { WiseOldManService } from './services/wise-old-man.service';
-import { PlayerGains } from './models/player-gains.model';
-import { Gains, HiScore } from './models/hiscore.model';
-import { CLUE_WEIGHTS } from './shared/constants';
+import { WiseOldManService } from './services/wise-old-man/wise-old-man.service';
+import { HiScore } from './models/hiscore.model';
+import { DT2DetailsToGains } from './services/helpers/dt2';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +10,7 @@ import { CLUE_WEIGHTS } from './shared/constants';
 })
 export class AppComponent {
   constructor(private WOMService: WiseOldManService) { }
-  competitionId: number = 29203;
+  competitionId: number = 31221;
   updatePlayers = false;
   numberTopPlayers = 3;
   hiscores: HiScore[] = [];
@@ -29,28 +28,10 @@ export class AppComponent {
       }
     });
 
-    this.hiscores.forEach(async (h) => h.gains = this.detailsToGains(await this.WOMService.getPlayerDetails(h.username, startDate, endDate)));
+    // this.hiscores.forEach(async (h) => h.gains = this.clueDetailsToGains(await this.WOMService.getPlayerDetails(h.username, startDate, endDate))); // WAS FOR CLUES
+    this.hiscores.forEach(async (h) => h.DT2Gains = DT2DetailsToGains(await this.WOMService.getPlayerDetails(h.username, startDate, endDate)));
 
-    setInterval(() => this.hiscores.sort((h1, h2) => h2.gains?.total! - h1.gains?.total!), 1000);
-  }
-
-  detailsToGains(playerDetails: PlayerGains): Gains {
-    const gains: Gains = {
-      beginner: playerDetails.data.activities.clue_scrolls_beginner.score.gained,
-      easy: playerDetails.data.activities.clue_scrolls_easy.score.gained,
-      medium: playerDetails.data.activities.clue_scrolls_medium.score.gained,
-      hard: playerDetails.data.activities.clue_scrolls_hard.score.gained,
-      elite: playerDetails.data.activities.clue_scrolls_elite.score.gained,
-      master: playerDetails.data.activities.clue_scrolls_master.score.gained,
-    }
-
-    gains.total = this.getClueScore(gains);
-
-    return gains;
-  }
-
-  getClueScore(gains: Gains): number {
-    return gains.beginner * CLUE_WEIGHTS.beginner + gains.easy * CLUE_WEIGHTS.easy + gains.medium * CLUE_WEIGHTS.medium + gains.hard * CLUE_WEIGHTS.hard + gains.elite * CLUE_WEIGHTS.elite + gains.master * CLUE_WEIGHTS.master;
+    setInterval(() => this.hiscores.sort((h1, h2) => h2.clueGains?.total! - h1.clueGains?.total!), 1000);
   }
 
   numberTopPlayersValueChange($event: any) {
@@ -59,3 +40,4 @@ export class AppComponent {
     this.numberTopPlayers = $event.target.value;
   }
 }
+

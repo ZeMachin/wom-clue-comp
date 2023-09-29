@@ -6,3 +6,10 @@ export const CLUE_WEIGHTS = {
   elite: 4,
   master: 6
 }
+
+export const DT2_WEIGHTS = {
+  vardorvis: 0.6,
+  duke: 0.8,
+  leviathan: 1,
+  whisperer: 1.15
+}
