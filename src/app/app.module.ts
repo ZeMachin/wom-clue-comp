@@ -7,9 +7,11 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { PlayerCardComponent } from './player-card/player-card.component';
 
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
-import {MatInputModule} from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+
+import { PrimengModule } from './primeng.module';
 
 
 @NgModule({
@@ -24,7 +26,8 @@ import {MatInputModule} from '@angular/material/input';
     HttpClientModule,
     MatButtonModule,
     MatIconModule,
-    MatInputModule
+    MatInputModule,
+    PrimengModule
   ],
   providers: [],
   bootstrap: [AppComponent]
