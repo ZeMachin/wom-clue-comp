@@ -4,6 +4,7 @@ import { HiScore } from '../models/hiscore.model';
 import { CompetitionParticipationDetails } from '../models/participation.model';
 import { getGainsTotal } from '../services/helpers/gains';
 import { WiseOldManService } from '../services/wise-old-man/wise-old-man.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-competition',
@@ -12,20 +13,17 @@ import { WiseOldManService } from '../services/wise-old-man/wise-old-man.service
 })
 export class CompetitionComponent implements OnInit {
 
-  constructor(private WOMService: WiseOldManService) { }
+  constructor(private WOMService: WiseOldManService, private activatedRoute: ActivatedRoute) { }
   competitionId: number = 0;
   metrics?: {name: string, weight: number}[];
   hiscores: HiScore[] = [];
   title: string = 'No competition at this time';
 
   ngOnInit(): void {
-    this.competitionId = 31221;
-    this.metrics = [
-      { name: 'vardorvis', weight: 0.6 },
-      { name: 'duke_sucellus', weight: 0.8 },
-      { name: 'the_leviathan', weight: 1 },
-      { name: 'the_whisperer', weight: 1.15 }
-    ];
+    this.competitionId = parseInt(this.activatedRoute.snapshot.queryParamMap.get('competitionId')!);
+    const metrics = this.activatedRoute.snapshot.queryParamMap.get('metrics');
+    if(metrics !== null)
+      this.metrics = JSON.parse(metrics);
     this.updateStats();
   }
 

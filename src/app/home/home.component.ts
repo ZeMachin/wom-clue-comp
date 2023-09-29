@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormArray, FormControl, FormGroup } from '@angular/forms';
+import { NavigationExtras, Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -9,7 +10,7 @@ import { FormBuilder, FormArray, FormControl, FormGroup } from '@angular/forms';
 export class HomeComponent {
   form!: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
     this.form = fb.group(
       { 
         competitionId: [31221],
@@ -41,6 +42,19 @@ export class HomeComponent {
   }
 
   onSubmit() {
-    console.log('submitting')
+    this.navigateToCompetition(this.form.get('competitionId')?.value, this.form.get('metrics')?.value);
+  }
+
+  navigateToCompetition(competitionId: number, metrics?: {name: string, weight: number}[]) {
+    const queryParams: any = {
+      metrics: JSON.stringify(metrics),
+      competitionId: competitionId
+    };
+
+    const navigationExtras: NavigationExtras = {
+      queryParams
+    };
+
+    this.router.navigate(['/competition'], navigationExtras);
   }
 }
