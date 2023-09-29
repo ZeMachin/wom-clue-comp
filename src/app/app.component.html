@@ -3,8 +3,8 @@
   <div class="title">
     <h2>{{title}}</h2>
   </div>
-  <div class="button-container">
+  <!-- <div class="button-container">
     <button (click)="updateStats()">Update</button>
-  </div>
+  </div> -->
   <app-player-card *ngFor="let hiscore of hiscores; let i = index" [hiscore]="hiscore" [index]="i"></app-player-card>
 </body>
