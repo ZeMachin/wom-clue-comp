@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ClueGains, HiScore } from '../models/hiscore.model';
-import { CLUE_WEIGHTS, DT2_WEIGHTS } from 'src/app/shared/constants';
+import { HiScore } from '../models/hiscore.model';
 
 @Component({
   selector: 'app-player-card',
@@ -11,15 +10,13 @@ export class PlayerCardComponent {
   @Input('hiscore') hiscore!: HiScore;
   @Input('index') index!: number;
 
-  CLUE_WEIGHTS = CLUE_WEIGHTS;
-  DT2_WEIGHTS = DT2_WEIGHTS;
   expanded: boolean = false;
 
   toggleExpanded() {
     this.expanded = !this.expanded;
   }
 
-  keys(object: ClueGains): string[] {
+  keys(object: any): string[] {
     return Object.keys(object);
   }
 }

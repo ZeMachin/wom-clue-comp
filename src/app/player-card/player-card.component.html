@@ -25,23 +25,23 @@
   </ul>
 </div> -->
 
-<div *ngIf="!expanded" class="card-collapsed" (click)="toggleExpanded()">
-  <b class="text">{{index+1}}. {{hiscore.displayName}} - {{hiscore.DT2Gains?.total }} points</b>
+<!-- <div *ngIf="!expanded" class="card-collapsed" (click)="toggleExpanded()">
+  <b class="text">{{index+1}}. {{hiscore.displayName}} - {{hiscore.gains?.total }} points</b>
 </div>
 <div *ngIf="expanded" class="card-expanded" (click)="toggleExpanded()">
-  <b class="text">{{index+1}}. {{hiscore.displayName}} - {{hiscore.DT2Gains?.total }} points</b>
-  <ul *ngIf="hiscore.DT2Gains">
+  <b class="text">{{index+1}}. {{hiscore.displayName}} - {{hiscore.gains?.total }} points</b>
+  <ul *ngIf="hiscore.gains">
     <li>
-      Vardorvis: {{hiscore.DT2Gains.vardorvis}} ({{hiscore.DT2Gains.vardorvis * DT2_WEIGHTS.vardorvis}} points)
+      Vardorvis: {{hiscore.gains.vardorvis}} ({{hiscore.gains.vardorvis * DT2_WEIGHTS.vardorvis}} points)
     </li>
     <li>
-      Duke Sucellus: {{hiscore.DT2Gains.duke_sucellus}} ({{hiscore.DT2Gains.duke_sucellus * DT2_WEIGHTS.duke_sucellus}} points)
+      Duke Sucellus: {{hiscore.gains.duke_sucellus}} ({{hiscore.gains.duke_sucellus * DT2_WEIGHTS.duke_sucellus}} points)
     </li>
     <li>
-      The Leviathan: {{hiscore.DT2Gains.the_leviathan}} ({{hiscore.DT2Gains.the_leviathan * DT2_WEIGHTS.the_leviathan}} points)
+      The Leviathan: {{hiscore.gains.the_leviathan}} ({{hiscore.gains.the_leviathan * DT2_WEIGHTS.the_leviathan}} points)
     </li>
     <li>
-      The Whisperer: {{hiscore.DT2Gains.the_whisperer}} ({{hiscore.DT2Gains.the_whisperer * DT2_WEIGHTS.the_whisperer}} points)
+      The Whisperer: {{hiscore.gains.the_whisperer}} ({{hiscore.gains.the_whisperer * DT2_WEIGHTS.the_whisperer}} points)
     </li>
   </ul>
-</div>
+</div> -->
