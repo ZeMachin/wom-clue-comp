@@ -48,7 +48,7 @@ export class CompetitionComponent implements OnInit {
       this.hiscores.forEach((h) => h.gains.total = getGainsTotal(h.gains, this.metrics!));
     } 
 
-    console.log('hiscores:', this.hiscores);
+    // console.log('hiscores:', this.hiscores);
 
     setInterval(() => this.hiscores.sort((h1, h2) => h2.gains?.total! - h1.gains?.total!), 1000);
   }  
