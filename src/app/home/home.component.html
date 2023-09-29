@@ -1,1 +1,32 @@
-<p>home works!</p>
+<div class="homepage">
+    <form [formGroup]="form">
+        <div class="p-inputgroup">
+            <span class="p-inputgroup-addon">
+                <i class="pi pi-star-fill"></i>
+            </span>
+            <p-inputNumber inputId="integeronly" formControlName="competitionId"></p-inputNumber>
+        </div>
+        <div formArrayName="metrics" class="metrics">
+            <div *ngFor="let metricForm of metrics.controls; let i = index">
+                <div class="metric-row" [formGroupName]="i">
+                <!-- TODO: change to dropdown using enums in metric model -->
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon">
+                            <i class="pi pi-stopwatch"></i>
+                        </span>
+                        <input pInputText placeholder="Metric name" formControlName="name"/>
+                    </div>
+                    <div class="p-inputgroup">
+                        <span class="p-inputgroup-addon">
+                            <i class="pi pi-wrench"></i>
+                        </span>
+                        <p-inputNumber inputId="integeronly" formControlName="weight"></p-inputNumber>
+                    </div>
+                    <p-button icon="pi pi-trash" (onClick)="onDeleteMetric(i)"></p-button>
+                </div> 
+            </div>
+            <p-button icon="pi pi-plus" (onClick)="onAddMetric()"></p-button>
+        </div>
+    </form>
+    <p-button label="Submit" (onClick)="onSubmit()"></p-button>
+</div>

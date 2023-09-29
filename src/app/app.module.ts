@@ -1,19 +1,20 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { PlayerCardComponent } from './player-card/player-card.component';
+import { HomeComponent } from './home/home.component';
+import { CompetitionComponent } from './competition/competition.component';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 
 import { PrimengModule } from './shared/primeng.module';
-import { HomeComponent } from './home/home.component';
-import { CompetitionComponent } from './competition/competition.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { CompetitionComponent } from './competition/competition.component';
     MatButtonModule,
     MatIconModule,
     MatInputModule,
-    PrimengModule
+    PrimengModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

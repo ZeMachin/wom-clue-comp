@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
-
+import { InputNumberModule } from 'primeng/inputnumber';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    TableModule
-  ],
   exports: [
-    TableModule
+    TableModule,
+    InputNumberModule,
+    InputTextModule,
+    ButtonModule
   ]
 })
 export class PrimengModule { }
