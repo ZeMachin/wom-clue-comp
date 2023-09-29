@@ -1,11 +1,11 @@
 <div class="homepage">
     <form [formGroup]="form">
-        <div class="p-inputgroup">
-            <span class="p-inputgroup-addon">
-                <i class="pi pi-star-fill"></i>
-            </span>
-            <p-inputNumber inputId="integeronly" formControlName="competitionId"></p-inputNumber>
+        <div class="input">
+            <label for="competitionId">Competition ID</label>
+            <p-inputNumber inputId="competitionId" formControlName="competitionId"></p-inputNumber>
         </div>
+        <hr>
+        <h3>Metrics</h3>
         <div formArrayName="metrics" class="metrics">
             <div *ngFor="let metricForm of metrics.controls; let i = index">
                 <div class="metric-row" [formGroupName]="i">
