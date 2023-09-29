@@ -11,14 +11,18 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 
-import { PrimengModule } from './primeng.module';
+import { PrimengModule } from './shared/primeng.module';
+import { HomeComponent } from './home/home.component';
+import { CompetitionComponent } from './competition/competition.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    PlayerCardComponent
+    PlayerCardComponent,
+    HomeComponent,
+    CompetitionComponent
   ],
   imports: [
     BrowserModule,

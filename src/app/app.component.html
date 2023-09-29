@@ -1,25 +1,4 @@
 <body>
   <app-header></app-header>
-  <div class="title">
-    <h2>{{title}}</h2>
-  </div>
-  <!-- <div class="button-container">
-    <button (click)="updateStats()">Update</button>
-  </div> -->
-   <p-table [value]="hiscores" [tableStyle]="{ 'min-width': '50rem' }">
-    <ng-template pTemplate="header">
-        <tr>
-            <th>Player</th>
-            <th>Total Points</th>
-            <th *ngFor="let metric of metrics">{{formatTitle(metric.name)}}</th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-hiscore>
-        <tr>
-            <td>{{ hiscore.displayName }}</td>
-            <td>{{ hiscore.gains?.total }}</td>
-            <td *ngFor="let metric of metrics">{{hiscore.gains[metric.name]}}</td>
-        </tr>
-    </ng-template>
-</p-table>
+  <router-outlet></router-outlet>
 </body>
