@@ -9,7 +9,7 @@ export const CLUE_WEIGHTS = {
 
 export const DT2_WEIGHTS = {
   vardorvis: 0.6,
-  duke: 0.8,
-  leviathan: 1,
-  whisperer: 1.15
+  duke_sucellus: 0.8,
+  the_leviathan: 1,
+  the_whisperer: 1.15
 }

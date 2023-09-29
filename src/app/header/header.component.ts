@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./header.component.less']
 })
 export class HeaderComponent {
-
+  competitionName = 'Trailer Boys Competition';
 }

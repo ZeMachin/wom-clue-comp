@@ -1,7 +1,7 @@
 <body>
   <app-header></app-header>
   <div class="title">
-    <h2>Leaderboard top <input type="number" [value]="numberTopPlayers" (change)="numberTopPlayersValueChange($event)"></h2>
+    <h2>{{title}}</h2>
   </div>
   <div class="button-container">
     <button (click)="updateStats()">Update</button>
