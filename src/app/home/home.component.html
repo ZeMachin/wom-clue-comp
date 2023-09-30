@@ -5,17 +5,24 @@
             <p-inputNumber inputId="competitionId" formControlName="competitionId"></p-inputNumber>
         </div>
         <hr>
-        <h3>Metrics</h3>
-        <div formArrayName="metrics" class="metrics">
+        <div class="headers grid">
+            <h3 class="col-4">Metrics</h3>
+            <h3 class="col-6">Weights</h3>
+        </div>
+        <div formArrayName="metrics" class="metrics grid">
             <div *ngFor="let metricForm of metrics.controls; let i = index">
                 <div class="metric-row" [formGroupName]="i">
-                <!-- TODO: change to dropdown using enums in metric model -->
-                    <div class="p-inputgroup">
-                        <span class="p-inputgroup-addon">
-                            <i class="pi pi-stopwatch"></i>
-                        </span>
-                        <input pInputText placeholder="Metric name" formControlName="name"/>
-                    </div>
+                    <p-dropdown [options]="metricOptions" placeholder="Select a Metric" [group]="true" formControlName="name" class="col-4" [style]="{'width': '100%'}" emptyFilterMessage="No metric found." (onFilter)="onFilter($event)">
+                        <ng-template let-group pTemplate="group">
+                            {{group.label}}
+                        </ng-template>
+                        <ng-template let-item pTemplate="item">
+                            {{formatTitle(item)}}
+                        </ng-template>
+                        <ng-template let-item pTemplate="selectedItem">
+                            {{formatTitle(item)}}
+                        </ng-template>
+                    </p-dropdown>
                     <div class="p-inputgroup">
                         <span class="p-inputgroup-addon">
                             <i class="pi pi-wrench"></i>

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormArray, FormControl, FormGroup } from '@angular/forms';
 import { NavigationExtras, Router } from '@angular/router';
+import { Activity, Boss, ComputedMetrics, Skill } from '../models/metric.model';
+import { SelectItem, SelectItemGroup } from 'primeng/api';
 
 @Component({
   selector: 'app-home',
@@ -9,6 +11,7 @@ import { NavigationExtras, Router } from '@angular/router';
 })
 export class HomeComponent {
   form!: FormGroup;
+  metricOptions: SelectItemGroup[] = [];
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.form = fb.group(
@@ -22,6 +25,32 @@ export class HomeComponent {
         ])  
       }
     );
+    this.loadMetricOptions();
+  }
+
+  loadMetricOptions() {
+    this.metricOptions = [
+      {
+        label: 'Skills',
+        items: this.getValuesFromEnum(Skill),
+      },
+      {
+        label: 'Activities',
+        items: this.getValuesFromEnum(Activity),
+      },
+      {
+        label: 'Bosses',
+        items: this.getValuesFromEnum(Boss),
+      },
+      { 
+        label: 'Computed Metrics',
+        items: this.getValuesFromEnum(ComputedMetrics),
+      }
+    ]
+  }
+
+  getValuesFromEnum(enumList: any): SelectItem[] {
+    return Object.values(enumList).filter((v) => typeof v === 'string') as SelectItem[];
   }
 
   get metrics() {
@@ -56,5 +85,17 @@ export class HomeComponent {
     };
 
     this.router.navigate(['/competition'], navigationExtras);
+  }
+
+  formatTitle(title: string): string {
+    return title.split('_').map((w) => this.capitalize(w)).reduce((w1, w2) => w1 + ' ' + w2);
+  }
+
+  capitalize(word: string): string {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+
+  onFilter($event: any) {
+    console.log('event:', $event);
   }
 }
