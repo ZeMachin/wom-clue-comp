@@ -16,6 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 
 import { PrimengModule } from './shared/primeng.module';
+import { FooterComponent } from './footer/footer.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { PrimengModule } from './shared/primeng.module';
     HeaderComponent,
     PlayerCardComponent,
     HomeComponent,
-    CompetitionComponent
+    CompetitionComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
