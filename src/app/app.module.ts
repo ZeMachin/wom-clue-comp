@@ -7,7 +7,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
-import { PlayerCardComponent } from './player-card/player-card.component';
 import { HomeComponent } from './home/home.component';
 import { CompetitionComponent } from './competition/competition.component';
 
@@ -23,7 +22,6 @@ import { FooterComponent } from './footer/footer.component';
   declarations: [
     AppComponent,
     HeaderComponent,
-    PlayerCardComponent,
     HomeComponent,
     CompetitionComponent,
     FooterComponent
