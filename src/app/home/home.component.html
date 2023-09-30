@@ -1,7 +1,7 @@
 <div class="homepage">
     <form [formGroup]="form">
         <div class="input">
-            <label for="competitionId">Competition ID</label>
+            <label for="competitionId"><b>Competition ID</b></label>
             <p-inputNumber inputId="competitionId" formControlName="competitionId"></p-inputNumber>
         </div>
         <hr>
@@ -23,7 +23,7 @@
                             {{formatTitle(item)}}
                         </ng-template>
                     </p-dropdown>
-                    <div class="p-inputgroup">
+                    <div class="p-inputgroup weight">
                         <span class="p-inputgroup-addon">
                             <i class="pi pi-wrench"></i>
                         </span>
