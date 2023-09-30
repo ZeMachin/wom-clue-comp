@@ -85,6 +85,7 @@ import { AnimateModule } from 'primeng/animate';
 import { CardModule } from 'primeng/card';
 import { BlockUIModule } from 'primeng/blockui';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   exports: [
@@ -173,6 +174,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     TreeTableModule,
     AnimateModule,
     CardModule,
-  ]
+  ],
+   providers: [ MessageService ]
 })
 export class PrimengModule { }

@@ -6,6 +6,8 @@ import { getGainsTotal } from '../services/helpers/gains';
 import { WiseOldManService } from '../services/wise-old-man/wise-old-man.service';
 import { ActivatedRoute } from '@angular/router';
 import { differenceInHours } from 'date-fns';
+import { MessageService } from 'primeng/api';
+import { PlayerDetails } from '../models/player.model';
 
 const PLAYER_UPDATE_DELAY = 6; // Minimum of hours to wait between two player updates
 const NUMBER_PLAYERS_UPDATE = 450; // Number of players that will be updated. 
@@ -17,7 +19,11 @@ const NUMBER_PLAYERS_UPDATE = 450; // Number of players that will be updated.
 })
 export class CompetitionComponent implements OnInit {
 
-  constructor(private WOMService: WiseOldManService, private activatedRoute: ActivatedRoute) { }
+  constructor(
+    private WOMService: WiseOldManService, 
+    private activatedRoute: ActivatedRoute,
+    private messageService: MessageService
+  ) { }
   competitionId: number = 0;
   metrics?: {name: string, weight: number}[];
   hiscores: HiScore[] = [];
@@ -88,11 +94,34 @@ export class CompetitionComponent implements OnInit {
       const metricsLength = this.metrics ? this.metrics.length : 0;
       const updateList = this.hiscores.filter((h) => differenceInHours(Date.now(), h.lastUpdated) > PLAYER_UPDATE_DELAY).sort((h1, h2) => h1.lastUpdated.getTime() - h2.lastUpdated.getTime()).slice(0, NUMBER_PLAYERS_UPDATE - metricsLength * 2 - 3); // Filters out players that have been updated less than $PLAYER_UPDATE_DELAY hours ago, and sorts them by last updated
       // While waiting for the API key, number has to be < 100 - 2 * # of metrics
-      for(let hiscore of updateList)
+      for(let hiscore of updateList) {
         await this.WOMService.updatePlayer(hiscore.username)
-              .catch((err) => console.error(err));
-      this.updateStats();
-      this.updating = false;
+        .then((response: PlayerDetails) => this.messageService.add({ 
+          severity: 'success', 
+          summary: response.displayName, 
+          detail: `${response.displayName} updated successfully.`
+        }))
+        .catch((err) => {
+          console.error(err);
+          this.messageService.add({ 
+            severity: 'error', 
+            summary: hiscore.displayName, 
+            detail: `${hiscore.displayName} could not be updated.`,
+            life: 2000
+          });
+        });
+      }
+      await this.updateStats().then(
+        () => {
+          this.messageService.add({
+            severity: 'success', 
+            summary: 'Done', 
+            detail: `Finished updating.`,
+            life: 30000
+          });
+          this.updating = false;
+        }
+      );
     }
   }
 
