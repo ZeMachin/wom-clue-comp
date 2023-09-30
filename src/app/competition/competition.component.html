@@ -8,9 +8,15 @@
     </div>
 </div>
 <p-toast></p-toast>
-<p-table [value]="hiscores" [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[5,10,25,50]" [paginator]="true" [rows]="10" [loading]="!hiscores.length">
+<p-table #dt [value]="hiscores" [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[5,10,25,50]" [paginator]="true" [rows]="10" [loading]="!hiscores.length">
     <ng-template pTemplate="header">
         <tr>
+            <th>Category 
+                <i class="pi pi-filter filter-btn" (click)="showCategoryFilter($event)"></i>
+                <p-dialog #categorydialog [(visible)]="categoryFilterVisible" [draggable]="false" [resizable]="false">
+                    <p-dropdown [(ngModel)]="categoryFilter" [options]="categoryOptions" (onChange)="onCategoryFilterChange($event)" [showClear]="true" placeholder="Select a category" appendTo="body"></p-dropdown>
+                </p-dialog>
+            </th>
             <th pSortableColumn="displayName">Player<p-sortIcon field="displayName"></p-sortIcon></th>
             <th pSortableColumn="gains.total">Total Points<p-sortIcon field="gains.total"></p-sortIcon></th>
             <th *ngFor="let metric of metrics" [pSortableColumn]="'gains.' + metric.name">{{formatTitle(metric.name)}}<p-sortIcon [field]="'gains.' + metric.name"></p-sortIcon></th>
@@ -20,6 +26,7 @@
     </ng-template>
     <ng-template pTemplate="body" let-hiscore>
         <tr>
+            <td><img [src]="'assets/icons/'+ hiscore.category +'.png'"></td>
             <td>{{ hiscore.displayName }}</td>
             <td>{{ formatNumber(hiscore.gains?.total) }}</td>
             <td *ngFor="let metric of metrics">{{hiscore.gains[metric.name]}}</td>

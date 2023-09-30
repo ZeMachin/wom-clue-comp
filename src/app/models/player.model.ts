@@ -24,7 +24,7 @@ export interface PlayerDetails extends Player {
   latestSnapshot?: Snapshot;
 }
 
-enum PlayerType {
+export enum PlayerType {
   'unknown', 'regular', 'ironman', 'hardcore', 'ultimate'
 }
 

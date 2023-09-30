@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CompetitionDetails } from '../models/competition.model';
 import { HiScore } from '../models/hiscore.model';
 import { CompetitionParticipationDetails } from '../models/participation.model';
@@ -6,9 +6,10 @@ import { getGainsTotal } from '../services/helpers/gains';
 import { WiseOldManService } from '../services/wise-old-man/wise-old-man.service';
 import { ActivatedRoute } from '@angular/router';
 import { differenceInHours, differenceInMinutes, differenceInSeconds } from 'date-fns';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { PlayerDetails } from '../models/player.model';
-import { hi } from 'date-fns/locale';
+import { Table } from 'primeng/table';
+import { Dialog } from 'primeng/dialog';
 
 const PLAYER_UPDATE_DELAY = 6; // Minimum of hours to wait between two player updates
 const NUMBER_PLAYERS_UPDATE = 450; // Number of players that will be updated. 
@@ -19,17 +20,29 @@ const NUMBER_PLAYERS_UPDATE = 450; // Number of players that will be updated.
   styleUrls: ['./competition.component.less']
 })
 export class CompetitionComponent implements OnInit {
+  @ViewChild('dt') table!: Table;
+  @ViewChild('categorydialog') categoryDialog!: Dialog;
 
-  constructor(
-    private WOMService: WiseOldManService, 
-    private activatedRoute: ActivatedRoute,
-    private messageService: MessageService
-  ) { }
   competitionId: number = 0;
   metrics?: {name: string, weight: number}[];
   hiscores: HiScore[] = [];
   title: string = 'No competition at this time';
   updating: boolean = false;
+  categoryOptions = [
+    { label: 'Main', value: 'regular' },
+    { label: 'Ironmeme', value: 'ironman' },
+    { label: 'HCIM', value: 'hardcore' },
+    { label: 'UIM', value: 'ultimate' },
+  ]
+  categoryFilter?: { label: string, value: string };
+  categoryFilterVisible: boolean = false;
+
+  constructor(
+    private WOMService: WiseOldManService, 
+    private activatedRoute: ActivatedRoute,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
+  ) { }
 
   ngOnInit(): void {
     this.competitionId = parseInt(this.activatedRoute.snapshot.queryParamMap.get('competitionId')!);
@@ -73,6 +86,7 @@ export class CompetitionComponent implements OnInit {
       playerId: participation.playerId,
       username: participation.player.username.replace(' ', '_'), 
       displayName: participation.player.displayName,
+      category: participation.player.type,
       gains: {
         total: participation.progress.gained
       },
@@ -158,5 +172,15 @@ export class CompetitionComponent implements OnInit {
     if(seconds > 0)
       return `${seconds}s ago.`;
     return '';
+  }
+
+  onCategoryFilterChange(event: any) {
+    this.table.filter(event.value, 'category', 'equals')
+  }
+
+  showCategoryFilter(event: any) {
+    // console.log('event:', event);
+    this.categoryFilterVisible = !this.categoryFilterVisible;
+    this.categoryDialog.style = {position: 'absolute', top: event.pageY , left: event.pageX};
   }
 }

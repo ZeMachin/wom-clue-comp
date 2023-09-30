@@ -85,7 +85,8 @@ import { AnimateModule } from 'primeng/animate';
 import { CardModule } from 'primeng/card';
 import { BlockUIModule } from 'primeng/blockui';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
 
 @NgModule({
   exports: [
@@ -174,7 +175,8 @@ import { MessageService } from 'primeng/api';
     TreeTableModule,
     AnimateModule,
     CardModule,
+    ConfirmPopupModule
   ],
-   providers: [ MessageService ]
+   providers: [ MessageService, ConfirmationService ]
 })
 export class PrimengModule { }

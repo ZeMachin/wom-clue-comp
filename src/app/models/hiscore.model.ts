@@ -1,3 +1,5 @@
+import { PlayerType } from "./player.model";
+
 export interface HiScore {
   username: string;
   displayName: string;
@@ -5,4 +7,5 @@ export interface HiScore {
   gains?: any; // { key: number, key: number, ..., total: number }
   lastUpdated: Date;
   updating?: boolean;
+  category: PlayerType;
 }
