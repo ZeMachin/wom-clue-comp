@@ -64,7 +64,7 @@ export class CompetitionComponent implements OnInit {
 
     this.hiscores = hiscores;
 
-    setInterval(() => this.hiscores.sort((h1, h2) => h2.gains?.total! - h1.gains?.total!), 100);
+    setInterval(() => this.hiscores.sort((h1, h2) => this.sortTotal(h1, h2)), 100);
   }  
   
   createHiScore(participation: CompetitionParticipationDetails): HiScore {
@@ -79,38 +79,15 @@ export class CompetitionComponent implements OnInit {
     };
   }
 
-  formatTitle(title: string): string {
-    return title.split('_').map((w) => this.capitalize(w)).reduce((w1, w2) => w1 + ' ' + w2);
-  }
-
-  capitalize(word: string): string {
-    return word.charAt(0).toUpperCase() + word.slice(1);
-  }
-
   async updatePlayers() {
     if(!this.updating) {
       this.updating = true;
       await this.updateStats(false);
       const metricsLength = this.metrics ? this.metrics.length : 0;
-      const updateList = this.hiscores.filter((h) => differenceInHours(Date.now(), h.lastUpdated) > PLAYER_UPDATE_DELAY).sort((h1, h2) => h1.lastUpdated.getTime() - h2.lastUpdated.getTime()).slice(0, NUMBER_PLAYERS_UPDATE - metricsLength * 2 - 3); // Filters out players that have been updated less than $PLAYER_UPDATE_DELAY hours ago, and sorts them by last updated
+      const updateList = this.hiscores.filter((h) => differenceInHours(Date.now(), h.lastUpdated) > PLAYER_UPDATE_DELAY).sort((h1, h2) => this.sortLastUpdated(h1, h2)).slice(0, NUMBER_PLAYERS_UPDATE - metricsLength * 2 - 3); // Filters out players that have been updated less than $PLAYER_UPDATE_DELAY hours ago, and sorts them by last updated
       // While waiting for the API key, number has to be < 100 - 2 * # of metrics
-      for(let hiscore of updateList) {
-        await this.WOMService.updatePlayer(hiscore.username)
-        .then((response: PlayerDetails) => this.messageService.add({ 
-          severity: 'success', 
-          summary: response.displayName, 
-          detail: `${response.displayName} updated successfully.`
-        }))
-        .catch((err) => {
-          console.error(err);
-          this.messageService.add({ 
-            severity: 'error', 
-            summary: hiscore.displayName, 
-            detail: `${hiscore.displayName} could not be updated.`,
-            life: 2000
-          });
-        });
-      }
+      for(let hiscore of updateList) 
+        await this.updatePlayer(hiscore)
       await this.updateStats().then(
         () => {
           this.messageService.add({
@@ -125,7 +102,46 @@ export class CompetitionComponent implements OnInit {
     }
   }
 
+  async updatePlayer(hiscore: HiScore) {
+    hiscore.updating = true;
+    await this.WOMService.updatePlayer(hiscore.username)
+    .then((response: PlayerDetails) => {
+      hiscore.updating = false;
+      this.messageService.add({ 
+      severity: 'success', 
+      summary: response.displayName, 
+      detail: `${response.displayName} updated successfully.`
+      });
+    })
+    .catch((err) => {
+      hiscore.updating = false;
+      console.error(err);
+      this.messageService.add({ 
+        severity: 'error', 
+        summary: hiscore.displayName, 
+        detail: `${hiscore.displayName} could not be updated.`,
+        life: 2000
+      });
+    });
+  }
+
+  sortTotal(h1: HiScore, h2: HiScore) {
+    return h2.gains?.total! - h1.gains?.total!
+  }
+
+  sortLastUpdated(h1: HiScore, h2: HiScore) {
+    return h1.lastUpdated.getTime() - h2.lastUpdated.getTime();
+  }
+
   formatNumber(num: string): string {
     return parseFloat(num).toFixed(2).replace(/\.0+$/, '');
+  }
+
+  formatTitle(title: string): string {
+    return title.split('_').map((w) => this.capitalize(w)).reduce((w1, w2) => w1 + ' ' + w2);
+  }
+
+  capitalize(word: string): string {
+    return word.charAt(0).toUpperCase() + word.slice(1);
   }
 }

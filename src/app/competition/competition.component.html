@@ -11,6 +11,7 @@
             <th pSortableColumn="displayName">Player<p-sortIcon field="displayName"></p-sortIcon></th>
             <th pSortableColumn="gains.total">Total Points<p-sortIcon field="gains.total"></p-sortIcon></th>
             <th *ngFor="let metric of metrics" [pSortableColumn]="'gains.' + metric.name">{{formatTitle(metric.name)}}<p-sortIcon [field]="'gains.' + metric.name"></p-sortIcon></th>
+            <th></th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-hiscore>
@@ -18,6 +19,10 @@
             <td>{{ hiscore.displayName }}</td>
             <td>{{ formatNumber(hiscore.gains?.total) }}</td>
             <td *ngFor="let metric of metrics">{{hiscore.gains[metric.name]}}</td>
+            <td>
+                <i *ngIf="!hiscore.updating" class="pi pi-refresh refresh-btn" (click)="updatePlayer(hiscore)"></i>
+                <i *ngIf="hiscore.updating" class="pi pi-refresh pi-spin"></i>
+            </td>
         </tr>
     </ng-template>
 </p-table>

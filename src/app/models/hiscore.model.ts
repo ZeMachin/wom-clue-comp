@@ -4,4 +4,5 @@ export interface HiScore {
   playerId: number;
   gains?: any; // { key: number, key: number, ..., total: number }
   lastUpdated: Date;
+  updating?: boolean;
 }
