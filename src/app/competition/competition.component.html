@@ -2,7 +2,7 @@
     <h2>{{title}}</h2>
   </div>
   <div class="button-container">
-    <button (click)="updatePlayers()">Update players</button>
+    <button (click)="updatePlayers()" [disabled]="updating">Update players</button>
   </div>
    <p-table [value]="hiscores" [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[5,10,25,50]" [paginator]="true" [rows]="10" [loading]="!hiscores">
     <ng-template pTemplate="header">

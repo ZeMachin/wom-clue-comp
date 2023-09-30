@@ -22,6 +22,7 @@ export class CompetitionComponent implements OnInit {
   metrics?: {name: string, weight: number}[];
   hiscores: HiScore[] = [];
   title: string = 'No competition at this time';
+  updating: boolean = false;
 
   ngOnInit(): void {
     this.competitionId = parseInt(this.activatedRoute.snapshot.queryParamMap.get('competitionId')!);
@@ -81,14 +82,18 @@ export class CompetitionComponent implements OnInit {
   }
 
   async updatePlayers() {
-    this.updateStats(false);
-    const metricsLength = this.metrics ? this.metrics.length : 0;
-    const updateList = this.hiscores.filter((h) => differenceInHours(Date.now(), h.lastUpdated) > PLAYER_UPDATE_DELAY).sort((h1, h2) => h1.lastUpdated.getTime() - h2.lastUpdated.getTime()).slice(0, NUMBER_PLAYERS_UPDATE - metricsLength * 2 - 3); // Filters out players that have been updated less than $PLAYER_UPDATE_DELAY hours ago, and sorts them by last updated
-    // While waiting for the API key, number has to be < 100 - 2 * # of metrics
-    for(let hiscore of updateList)
-      await this.WOMService.updatePlayer(hiscore.username)
-            .catch((err) => console.error(err));
-    this.updateStats();
+    if(!this.updating) {
+      this.updating = true;
+      await this.updateStats(false);
+      const metricsLength = this.metrics ? this.metrics.length : 0;
+      const updateList = this.hiscores.filter((h) => differenceInHours(Date.now(), h.lastUpdated) > PLAYER_UPDATE_DELAY).sort((h1, h2) => h1.lastUpdated.getTime() - h2.lastUpdated.getTime()).slice(0, NUMBER_PLAYERS_UPDATE - metricsLength * 2 - 3); // Filters out players that have been updated less than $PLAYER_UPDATE_DELAY hours ago, and sorts them by last updated
+      // While waiting for the API key, number has to be < 100 - 2 * # of metrics
+      for(let hiscore of updateList)
+        await this.WOMService.updatePlayer(hiscore.username)
+              .catch((err) => console.error(err));
+      this.updateStats();
+      this.updating = false;
+    }
   }
 
   formatNumber(num: string): string {
