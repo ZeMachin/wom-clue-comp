@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { differenceInHours } from 'date-fns';
 
 const PLAYER_UPDATE_DELAY = 6; // Minimum of hours to wait between two player updates
-const NUMBER_PLAYERS_UPDATE = 90; // Number of players that will be updated. 
+const NUMBER_PLAYERS_UPDATE = 450; // Number of players that will be updated. 
 
 @Component({
   selector: 'app-competition',
@@ -85,5 +85,9 @@ export class CompetitionComponent implements OnInit {
       await this.WOMService.updatePlayer(hiscore.username)
             .catch((err) => console.error(err));
     this.updateStats();
+  }
+
+  formatNumber(num: string): string {
+    return parseFloat(num).toFixed(2).replace(/\.0+$/, '');
   }
 }

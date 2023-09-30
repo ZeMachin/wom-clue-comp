@@ -15,7 +15,7 @@
     <ng-template pTemplate="body" let-hiscore>
         <tr>
             <td>{{ hiscore.displayName }}</td>
-            <td>{{ hiscore.gains?.total }}</td>
+            <td>{{ formatNumber(hiscore.gains?.total) }}</td>
             <td *ngFor="let metric of metrics">{{hiscore.gains[metric.name]}}</td>
         </tr>
     </ng-template>
