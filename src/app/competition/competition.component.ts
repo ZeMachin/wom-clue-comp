@@ -31,13 +31,13 @@ export class CompetitionComponent implements OnInit {
     this.updateStats();
   }
 
-  async updateStats() {
+  async updateStats(filter: boolean = true) {
     // Getting competition details from API
     const competition = await this.WOMService.getCompetition(this.competitionId);
     // Getting our title
     this.title = competition.title;
     // Creating our hiscores with the player names and ids
-    this.hiscores = competition.participations.map((p) => this.createHiScore(p));
+    let hiscores = competition.participations.map((p) => this.createHiScore(p));
 
     // If metrics other than the ones configured in the competition are being used, we get the appropriate data
     if(this.metrics) {
@@ -45,14 +45,17 @@ export class CompetitionComponent implements OnInit {
       for (const metric of this.metrics)
         competitions[metric.name as keyof typeof competitions] = await this.WOMService.getCompetition(this.competitionId, metric.name);
       Object.keys(competitions).forEach((k) => 
-        this.hiscores.forEach(h => {
+        hiscores.forEach(h => {
           const participation = (competitions[k as keyof typeof competitions] as CompetitionDetails)?.participations.find((participation) => participation.playerId === h.playerId);
           h.gains[k] = participation?.progress.gained!;
       }))
-      this.hiscores.forEach((h) => h.gains.total = getGainsTotal(h.gains, this.metrics!));
+      hiscores.forEach((h) => h.gains.total = getGainsTotal(h.gains, this.metrics!));
     } 
 
     // console.log('hiscores:', this.hiscores);
+    if(filter) hiscores = hiscores.filter((h) => h.gains.total != 0);
+
+    this.hiscores = hiscores;
 
     setInterval(() => this.hiscores.sort((h1, h2) => h2.gains?.total! - h1.gains?.total!), 1000);
   }  
@@ -78,6 +81,7 @@ export class CompetitionComponent implements OnInit {
   }
 
   async updatePlayers() {
+    this.updateStats(false);
     const metricsLength = this.metrics ? this.metrics.length : 0;
     const updateList = this.hiscores.filter((h) => differenceInHours(Date.now(), h.lastUpdated) > PLAYER_UPDATE_DELAY).sort((h1, h2) => h1.lastUpdated.getTime() - h2.lastUpdated.getTime()).slice(0, NUMBER_PLAYERS_UPDATE - metricsLength * 2 - 3); // Filters out players that have been updated less than $PLAYER_UPDATE_DELAY hours ago, and sorts them by last updated
     // While waiting for the API key, number has to be < 100 - 2 * # of metrics
