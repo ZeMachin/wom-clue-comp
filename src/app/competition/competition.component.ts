@@ -57,7 +57,7 @@ export class CompetitionComponent implements OnInit {
 
     this.hiscores = hiscores;
 
-    setInterval(() => this.hiscores.sort((h1, h2) => h2.gains?.total! - h1.gains?.total!), 1000);
+    setInterval(() => this.hiscores.sort((h1, h2) => h2.gains?.total! - h1.gains?.total!), 100);
   }  
   
   createHiScore(participation: CompetitionParticipationDetails): HiScore {
