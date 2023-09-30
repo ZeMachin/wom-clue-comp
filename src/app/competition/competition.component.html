@@ -7,9 +7,9 @@
    <p-table [value]="hiscores" [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template pTemplate="header">
         <tr>
-            <th>Player</th>
-            <th>Total Points</th>
-            <th *ngFor="let metric of metrics">{{formatTitle(metric.name)}}</th>
+            <th pSortableColumn="displayName">Player<p-sortIcon field="displayName"></p-sortIcon></th>
+            <th pSortableColumn="gains.total">Total Points<p-sortIcon field="gains.total"></p-sortIcon></th>
+            <th *ngFor="let metric of metrics" [pSortableColumn]="'gains.' + metric.name">{{formatTitle(metric.name)}}<p-sortIcon [field]="'gains.' + metric.name"></p-sortIcon></th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-hiscore>
