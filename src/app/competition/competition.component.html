@@ -1,11 +1,14 @@
-<div class="title">
-    <h2>{{title}}</h2>
-  </div>
-  <p-toast></p-toast>
-  <div class="button-container">
-    <button (click)="updatePlayers()" [disabled]="updating">Update players</button>
-  </div>
-   <p-table [value]="hiscores" [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[5,10,25,50]" [paginator]="true" [rows]="10" [loading]="!hiscores">
+<div class="header">
+    <div class="title">
+        <h2>Competition name: </h2> 
+        <h2>{{title}}</h2>
+    </div>
+    <div class="button-container">
+        <button (click)="updatePlayers()" [disabled]="updating">Update all players</button>
+    </div>
+</div>
+<p-toast></p-toast>
+<p-table [value]="hiscores" [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[5,10,25,50]" [paginator]="true" [rows]="10" [loading]="!hiscores">
     <ng-template pTemplate="header">
         <tr>
             <th pSortableColumn="displayName">Player<p-sortIcon field="displayName"></p-sortIcon></th>
