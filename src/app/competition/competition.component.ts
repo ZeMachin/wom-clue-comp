@@ -5,6 +5,9 @@ import { CompetitionParticipationDetails } from '../models/participation.model';
 import { getGainsTotal } from '../services/helpers/gains';
 import { WiseOldManService } from '../services/wise-old-man/wise-old-man.service';
 import { ActivatedRoute } from '@angular/router';
+import { differenceInHours } from 'date-fns';
+
+const PLAYER_UPDATE_DELAY = 6; // Minimum of hours to wait between two player updates
 
 @Component({
   selector: 'app-competition',
@@ -60,7 +63,8 @@ export class CompetitionComponent implements OnInit {
       displayName: participation.player.displayName,
       gains: {
         total: participation.progress.gained
-      }
+      },
+      lastUpdated: new Date(participation.updatedAt)
     };
   }
 
@@ -70,5 +74,13 @@ export class CompetitionComponent implements OnInit {
 
   capitalize(word: string): string {
     return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+
+  async updatePlayers() {
+    const updateList = this.hiscores.filter((h) => differenceInHours(Date.now(), h.lastUpdated) > PLAYER_UPDATE_DELAY).sort((h1, h2) => h1.lastUpdated.getTime() - h2.lastUpdated.getTime()); // Filters out players that have been updated less than $PLAYER_UPDATE_DELAY hours ago, and sorts them by last updated
+    console.log('update list:', updateList);
+    for(let hiscore of updateList)
+      await this.WOMService.updatePlayer(hiscore.username);
+    this.updateStats();
   }
 }
