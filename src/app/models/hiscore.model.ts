@@ -8,4 +8,5 @@ export interface HiScore {
   lastUpdated: Date;
   updating?: boolean;
   category: PlayerType;
+  position?: number;
 }

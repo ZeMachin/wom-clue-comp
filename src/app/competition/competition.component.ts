@@ -22,6 +22,7 @@ const NUMBER_PLAYERS_UPDATE = 450; // Number of players that will be updated.
 export class CompetitionComponent implements OnInit {
   @ViewChild('dt') table!: Table;
   @ViewChild('categorydialog') categoryDialog!: Dialog;
+  @ViewChild('playernamedialog') playerNameDialog!: Dialog;
 
   competitionId: number = 0;
   metrics?: {name: string, weight: number}[];
@@ -35,13 +36,14 @@ export class CompetitionComponent implements OnInit {
     { label: 'UIM', value: 'ultimate' },
   ]
   categoryFilter?: { label: string, value: string };
+  playerNameFilter?: string;
   categoryFilterVisible: boolean = false;
+  playerNameFilterVisible: boolean = false;
 
   constructor(
     private WOMService: WiseOldManService, 
     private activatedRoute: ActivatedRoute,
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private messageService: MessageService
   ) { }
 
   ngOnInit(): void {
@@ -75,10 +77,10 @@ export class CompetitionComponent implements OnInit {
 
     // console.log('hiscores:', this.hiscores);
     if(filter) hiscores = hiscores.filter((h) => h.gains.total != 0);
+    hiscores.sort((h1, h2) => this.sortTotal(h1, h2))
+    hiscores.forEach((h, i) => h.position = i+1);
 
     this.hiscores = hiscores;
-
-    setInterval(() => this.hiscores.sort((h1, h2) => this.sortTotal(h1, h2)), 100);
   }  
   
   createHiScore(participation: CompetitionParticipationDetails): HiScore {
@@ -175,12 +177,23 @@ export class CompetitionComponent implements OnInit {
   }
 
   onCategoryFilterChange(event: any) {
-    this.table.filter(event.value, 'category', 'equals')
+    this.table.filter(event.value, 'category', 'equals');
+  }
+
+  onPlayerNameFilterChange(event: any) {
+    console.log('event:', event);
+    this.table.filter(event.value, 'displayName', 'equals');
   }
 
   showCategoryFilter(event: any) {
     // console.log('event:', event);
     this.categoryFilterVisible = !this.categoryFilterVisible;
     this.categoryDialog.style = {position: 'absolute', top: event.pageY , left: event.pageX};
+  }
+
+  showPlayerNameFilter(event: any) {
+    // console.log('event:', event);
+    this.playerNameFilterVisible = !this.playerNameFilterVisible;
+    this.playerNameDialog.style = {position: 'absolute', top: event.pageY , left: event.pageX};
   }
 }
