@@ -5,9 +5,10 @@ import { CompetitionParticipationDetails } from '../models/participation.model';
 import { getGainsTotal } from '../services/helpers/gains';
 import { WiseOldManService } from '../services/wise-old-man/wise-old-man.service';
 import { ActivatedRoute } from '@angular/router';
-import { differenceInHours } from 'date-fns';
+import { differenceInHours, differenceInMinutes, differenceInSeconds } from 'date-fns';
 import { MessageService } from 'primeng/api';
 import { PlayerDetails } from '../models/player.model';
+import { hi } from 'date-fns/locale';
 
 const PLAYER_UPDATE_DELAY = 6; // Minimum of hours to wait between two player updates
 const NUMBER_PLAYERS_UPDATE = 450; // Number of players that will be updated. 
@@ -107,6 +108,7 @@ export class CompetitionComponent implements OnInit {
     await this.WOMService.updatePlayer(hiscore.username)
     .then((response: PlayerDetails) => {
       hiscore.updating = false;
+      hiscore.lastUpdated = new Date();
       this.messageService.add({ 
       severity: 'success', 
       summary: response.displayName, 
@@ -143,5 +145,18 @@ export class CompetitionComponent implements OnInit {
 
   capitalize(word: string): string {
     return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+
+  getLastUpdatedDuration(hiscore: HiScore): string {
+    const hours = differenceInHours(Date.now(), hiscore.lastUpdated);
+    if(hours > 0)
+      return `${hours}h ago.`;
+    const minutes = differenceInMinutes(Date.now(), hiscore.lastUpdated);
+    if(minutes > 0)
+      return `${minutes}m ago.`;
+    const seconds = differenceInSeconds(Date.now(), hiscore.lastUpdated);
+    if(seconds > 0)
+      return `${seconds}s ago.`;
+    return '';
   }
 }
