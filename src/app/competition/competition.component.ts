@@ -181,8 +181,8 @@ export class CompetitionComponent implements OnInit {
   }
 
   onPlayerNameFilterChange(event: any) {
-    console.log('event:', event);
-    this.table.filter(event.value, 'displayName', 'equals');
+    // console.log('event:', event);
+    this.table.filter(this.playerNameFilter, 'displayName', 'contains');
   }
 
   showCategoryFilter(event: any) {

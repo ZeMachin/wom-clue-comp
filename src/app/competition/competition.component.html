@@ -22,7 +22,7 @@
             <th>Player
                 <i class="pi pi-filter filter-btn" (click)="showPlayerNameFilter($event)"></i>
                 <p-dialog #playernamedialog [(visible)]="playerNameFilterVisible" [draggable]="false" [resizable]="false">
-                    <input [(ngModel)]="playerNameFilter" pInputText type="text" (onNgModelChange)="onPlayerNameFilterChange($event)" placeholder="Player name">
+                    <input [(ngModel)]="playerNameFilter" pInputText type="text" (ngModelChange)="onPlayerNameFilterChange($event)" placeholder="Player name">
                 </p-dialog></th>
             <th pSortableColumn="gains.total">Total Points<p-sortIcon field="gains.total"></p-sortIcon></th>
             <th *ngFor="let metric of metrics" [pSortableColumn]="'gains.' + metric.name">{{formatTitle(metric.name)}}<p-sortIcon [field]="'gains.' + metric.name"></p-sortIcon></th>
