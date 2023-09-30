@@ -6,7 +6,9 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "build-pages": "ng build --base-href https://zemachin.github.io/wom-clue-comp/",
+    "deploy-pages": "npx angular-cli-ghpages --dir=dist/wom-clue-comp"
   },
   "private": true,
   "dependencies": {
