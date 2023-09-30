@@ -31,7 +31,7 @@ export class CompetitionComponent implements OnInit {
   updating: boolean = false;
   categoryOptions = [
     { label: 'Main', value: 'regular' },
-    { label: 'Ironmeme', value: 'ironman' },
+    { label: 'Ironman', value: 'ironman' },
     { label: 'HCIM', value: 'hardcore' },
     { label: 'UIM', value: 'ultimate' },
   ]
