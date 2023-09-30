@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { differenceInHours } from 'date-fns';
 
 const PLAYER_UPDATE_DELAY = 6; // Minimum of hours to wait between two player updates
+const NUMBER_PLAYERS_UPDATE = 90; // Number of players that will be updated. 
 
 @Component({
   selector: 'app-competition',
@@ -77,10 +78,12 @@ export class CompetitionComponent implements OnInit {
   }
 
   async updatePlayers() {
-    const updateList = this.hiscores.filter((h) => differenceInHours(Date.now(), h.lastUpdated) > PLAYER_UPDATE_DELAY).sort((h1, h2) => h1.lastUpdated.getTime() - h2.lastUpdated.getTime()); // Filters out players that have been updated less than $PLAYER_UPDATE_DELAY hours ago, and sorts them by last updated
-    console.log('update list:', updateList);
+    const metricsLength = this.metrics ? this.metrics.length : 0;
+    const updateList = this.hiscores.filter((h) => differenceInHours(Date.now(), h.lastUpdated) > PLAYER_UPDATE_DELAY).sort((h1, h2) => h1.lastUpdated.getTime() - h2.lastUpdated.getTime()).slice(0, NUMBER_PLAYERS_UPDATE - metricsLength * 2 - 3); // Filters out players that have been updated less than $PLAYER_UPDATE_DELAY hours ago, and sorts them by last updated
+    // While waiting for the API key, number has to be < 100 - 2 * # of metrics
     for(let hiscore of updateList)
-      await this.WOMService.updatePlayer(hiscore.username);
+      await this.WOMService.updatePlayer(hiscore.username)
+            .catch((err) => console.error(err));
     this.updateStats();
   }
 }

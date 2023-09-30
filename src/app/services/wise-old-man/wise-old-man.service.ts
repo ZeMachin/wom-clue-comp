@@ -5,8 +5,8 @@ import { firstValueFrom } from 'rxjs'
 import { PlayerGains } from '../../models/player-gains.model';
 import { PlayerDetails } from 'src/app/models/player.model';
 
-const API_BASE = 'https://api.wiseoldman.net/v2/';
-const COMPETITION_API = 'competitions/:id';
+const API_BASE = 'https://api.wiseoldman.net/v2';
+const COMPETITION_API = '/competitions/:id';
 const PLAYER_GAINS_API = '/players/:username/gained';
 const PLAYER_UPDATE_API = '/players/:username';
 
@@ -23,10 +23,8 @@ export class WiseOldManService {
   }
 
   getPlayerDetails(playerName: string, startDate: string, endDate: string): Promise<PlayerGains> {
-    console.log('player name:', playerName)
     const options = {params: new HttpParams().set('startDate', startDate).set('endDate', endDate)}
     const url = API_BASE + PLAYER_GAINS_API.replace(':username', playerName);
-    console.log('url:', url)
     return firstValueFrom(this.http.get<PlayerGains>(url, options));
   }
 
