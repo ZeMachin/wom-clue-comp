@@ -8,7 +8,7 @@
     </div>
 </div>
 <p-toast></p-toast>
-<p-table [value]="hiscores" [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[5,10,25,50]" [paginator]="true" [rows]="50" [loading]="!hiscores">
+<p-table [value]="hiscores" [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[5,10,25,50]" [paginator]="true" [rows]="10" [loading]="!hiscores">
     <ng-template pTemplate="header">
         <tr>
             <th pSortableColumn="displayName">Player<p-sortIcon field="displayName"></p-sortIcon></th>
