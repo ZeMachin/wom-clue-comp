@@ -10,6 +10,7 @@ import { MessageService } from 'primeng/api';
 import { PlayerDetails } from '../models/player.model';
 import { Table } from 'primeng/table';
 import { Dialog } from 'primeng/dialog';
+import { HttpErrorResponse } from '@angular/common/http';
 
 const PLAYER_UPDATE_DELAY = 4; // Minimum of hours to wait between two player updates
 const NUMBER_PLAYERS_UPDATE = 450; // Number of players that will be updated. 
@@ -55,32 +56,44 @@ export class CompetitionComponent implements OnInit {
   }
 
   async getUpdatedStats(filter: boolean = true): Promise<HiScore[]> {
-    // Getting competition details from API
-    const competition = await this.WOMService.getCompetition(this.competitionId);
-    // Getting our title
-    this.title = competition.title;
-    // Creating our hiscores with the player names and ids
-    let hiscores = competition.participations.map((p) => this.createHiScore(p));
+    try {
+      // Getting competition details from API
+      const competition = await this.WOMService.getCompetition(this.competitionId);
+      // Getting our title
+      this.title = competition.title;
+      // Creating our hiscores with the player names and ids
+      let hiscores = competition.participations.map((p) => this.createHiScore(p));
 
-    // If metrics other than the ones configured in the competition are being used, we get the appropriate data
-    if(this.metrics) {
-      const competitions: any = {};
-      for (const metric of this.metrics)
-        competitions[metric.name as keyof typeof competitions] = await this.WOMService.getCompetition(this.competitionId, metric.name);
-      Object.keys(competitions).forEach((k) => 
-        hiscores.forEach(h => {
-          const participation = (competitions[k as keyof typeof competitions] as CompetitionDetails)?.participations.find((participation) => participation.playerId === h.playerId);
-          h.gains[k] = participation?.progress.gained!;
-      }))
-      hiscores.forEach((h) => h.gains.total = getGainsTotal(h.gains, this.metrics!));
-    } 
+      // If metrics other than the ones configured in the competition are being used, we get the appropriate data
+      if(this.metrics) {
+        const competitions: any = {};
+        for (const metric of this.metrics)
+          competitions[metric.name as keyof typeof competitions] = await this.WOMService.getCompetition(this.competitionId, metric.name)
+        Object.keys(competitions).forEach((k) => 
+          hiscores.forEach(h => {
+            const participation = (competitions[k as keyof typeof competitions] as CompetitionDetails)?.participations.find((participation) => participation.playerId === h.playerId);
+            h.gains[k] = participation?.progress.gained!;
+        }))
+        hiscores.forEach((h) => h.gains.total = getGainsTotal(h.gains, this.metrics!));
+      } 
 
-    // console.log('hiscores:', this.hiscores);
-    if(filter) hiscores = hiscores.filter((h) => h.gains.total != 0);
-    hiscores.sort((h1, h2) => this.sortTotal(h1, h2))
-    hiscores.forEach((h, i) => h.position = i+1);
+      // console.log('hiscores:', this.hiscores);
+      if(filter) hiscores = hiscores.filter((h) => h.gains.total != 0);
+      hiscores.sort((h1, h2) => this.sortTotal(h1, h2))
+      hiscores.forEach((h, i) => h.position = i+1);
 
-    return hiscores;
+      return hiscores;
+    } catch(err) {
+      this.updating = false;
+      console.error(err);
+        this.messageService.add({ 
+          severity: 'error', 
+          summary: 'Failure', 
+          detail: `Competition could not be fetched.`,
+          life: 2000
+        });
+    }
+    return this.hiscores;
   }  
   
   createHiScore(participation: CompetitionParticipationDetails): HiScore {
@@ -103,8 +116,9 @@ export class CompetitionComponent implements OnInit {
       const metricsLength = this.metrics ? this.metrics.length : 0;
       const sortedFilteredList = updateList.filter((h) => differenceInHours(Date.now(), h.lastUpdated) >= PLAYER_UPDATE_DELAY).sort((h1, h2) => this.sortLastUpdated(h1, h2)).slice(0, NUMBER_PLAYERS_UPDATE - metricsLength * 2 - 3); // Filters out players that have been updated less than $PLAYER_UPDATE_DELAY hours ago, and sorts them by last updated
       // While waiting for the API key, number has to be < 100 - 2 * # of metrics
+      console.log('sortedFilteredList', sortedFilteredList);
       for(let hiscore of sortedFilteredList) 
-        await this.updatePlayer(hiscore)
+        if(!await this.updatePlayer(hiscore)) break;
       await this.getUpdatedStats().then(
         (hiscores) => {
           this.hiscores = hiscores;
@@ -120,9 +134,9 @@ export class CompetitionComponent implements OnInit {
     }
   }
 
-  async updatePlayer(hiscore: HiScore) {
+  async updatePlayer(hiscore: HiScore): Promise<boolean> {
     hiscore.updating = true;
-    await this.WOMService.updatePlayer(hiscore.username)
+    return await this.WOMService.updatePlayer(hiscore.username)
     .then((response: PlayerDetails) => {
       hiscore.updating = false;
       hiscore.lastUpdated = new Date();
@@ -131,8 +145,9 @@ export class CompetitionComponent implements OnInit {
       summary: response.displayName, 
       detail: `${response.displayName} updated successfully.`
       });
+      return true;
     })
-    .catch((err) => {
+    .catch((err: HttpErrorResponse) => {
       hiscore.updating = false;
       console.error(err);
       this.messageService.add({ 
@@ -141,6 +156,7 @@ export class CompetitionComponent implements OnInit {
         detail: `${hiscore.displayName} could not be updated.`,
         life: 2000
       });
+      return err.status !== 429;
     });
   }
 
