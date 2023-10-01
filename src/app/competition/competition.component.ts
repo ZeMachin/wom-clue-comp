@@ -46,15 +46,15 @@ export class CompetitionComponent implements OnInit {
     private messageService: MessageService
   ) { }
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.competitionId = parseInt(this.activatedRoute.snapshot.queryParamMap.get('competitionId')!);
     const metrics = this.activatedRoute.snapshot.queryParamMap.get('metrics');
     if(metrics !== null)
       this.metrics = JSON.parse(metrics);
-    this.updateStats();
+    this.hiscores = await this.getUpdatedStats();
   }
 
-  async updateStats(filter: boolean = true) {
+  async getUpdatedStats(filter: boolean = true): Promise<HiScore[]> {
     // Getting competition details from API
     const competition = await this.WOMService.getCompetition(this.competitionId);
     // Getting our title
@@ -80,7 +80,7 @@ export class CompetitionComponent implements OnInit {
     hiscores.sort((h1, h2) => this.sortTotal(h1, h2))
     hiscores.forEach((h, i) => h.position = i+1);
 
-    this.hiscores = hiscores;
+    return hiscores;
   }  
   
   createHiScore(participation: CompetitionParticipationDetails): HiScore {
@@ -99,14 +99,15 @@ export class CompetitionComponent implements OnInit {
   async updatePlayers() {
     if(!this.updating) {
       this.updating = true;
-      await this.updateStats(false);
+      const updateList = await this.getUpdatedStats(false);
       const metricsLength = this.metrics ? this.metrics.length : 0;
-      const updateList = this.hiscores.filter((h) => differenceInHours(Date.now(), h.lastUpdated) >= PLAYER_UPDATE_DELAY).sort((h1, h2) => this.sortLastUpdated(h1, h2)).slice(0, NUMBER_PLAYERS_UPDATE - metricsLength * 2 - 3); // Filters out players that have been updated less than $PLAYER_UPDATE_DELAY hours ago, and sorts them by last updated
+      const sortedFilteredList = updateList.filter((h) => differenceInHours(Date.now(), h.lastUpdated) >= PLAYER_UPDATE_DELAY).sort((h1, h2) => this.sortLastUpdated(h1, h2)).slice(0, NUMBER_PLAYERS_UPDATE - metricsLength * 2 - 3); // Filters out players that have been updated less than $PLAYER_UPDATE_DELAY hours ago, and sorts them by last updated
       // While waiting for the API key, number has to be < 100 - 2 * # of metrics
-      for(let hiscore of updateList) 
+      for(let hiscore of sortedFilteredList) 
         await this.updatePlayer(hiscore)
-      await this.updateStats().then(
-        () => {
+      await this.getUpdatedStats().then(
+        (hiscores) => {
+          this.hiscores = hiscores;
           this.messageService.add({
             severity: 'success', 
             summary: 'Done', 
