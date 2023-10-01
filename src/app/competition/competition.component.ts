@@ -6,12 +6,12 @@ import { getGainsTotal } from '../services/helpers/gains';
 import { WiseOldManService } from '../services/wise-old-man/wise-old-man.service';
 import { ActivatedRoute } from '@angular/router';
 import { differenceInHours, differenceInMinutes, differenceInSeconds } from 'date-fns';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { PlayerDetails } from '../models/player.model';
 import { Table } from 'primeng/table';
 import { Dialog } from 'primeng/dialog';
 
-const PLAYER_UPDATE_DELAY = 6; // Minimum of hours to wait between two player updates
+const PLAYER_UPDATE_DELAY = 4; // Minimum of hours to wait between two player updates
 const NUMBER_PLAYERS_UPDATE = 450; // Number of players that will be updated. 
 
 @Component({
@@ -101,7 +101,7 @@ export class CompetitionComponent implements OnInit {
       this.updating = true;
       await this.updateStats(false);
       const metricsLength = this.metrics ? this.metrics.length : 0;
-      const updateList = this.hiscores.filter((h) => differenceInHours(Date.now(), h.lastUpdated) > PLAYER_UPDATE_DELAY).sort((h1, h2) => this.sortLastUpdated(h1, h2)).slice(0, NUMBER_PLAYERS_UPDATE - metricsLength * 2 - 3); // Filters out players that have been updated less than $PLAYER_UPDATE_DELAY hours ago, and sorts them by last updated
+      const updateList = this.hiscores.filter((h) => differenceInHours(Date.now(), h.lastUpdated) >= PLAYER_UPDATE_DELAY).sort((h1, h2) => this.sortLastUpdated(h1, h2)).slice(0, NUMBER_PLAYERS_UPDATE - metricsLength * 2 - 3); // Filters out players that have been updated less than $PLAYER_UPDATE_DELAY hours ago, and sorts them by last updated
       // While waiting for the API key, number has to be < 100 - 2 * # of metrics
       for(let hiscore of updateList) 
         await this.updatePlayer(hiscore)
