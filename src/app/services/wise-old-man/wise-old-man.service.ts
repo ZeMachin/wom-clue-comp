@@ -9,6 +9,7 @@ const API_BASE = 'https://api.wiseoldman.net/v2';
 const COMPETITION_API = '/competitions/:id';
 const PLAYER_GAINS_API = '/players/:username/gained';
 const PLAYER_UPDATE_API = '/players/:username';
+const PLAYER_DETAILS = '/players/:username';
 const API_KEY = 'to0fe0auxjiypmnexhwme6eg';
 
 @Injectable({
@@ -27,13 +28,22 @@ export class WiseOldManService {
     return firstValueFrom(this.http.get<CompetitionDetails>(url, options));
   }
 
-  getPlayerDetails(playerName: string, startDate: string, endDate: string): Promise<PlayerGains> {
+  getPlayerGains(playerName: string, startDate: string, endDate: string): Promise<PlayerGains> {
     const options = {
       headers: new HttpHeaders().set('x-api-key', API_KEY), 
       params: new HttpParams().set('startDate', startDate).set('endDate', endDate),
     }
     const url = API_BASE + PLAYER_GAINS_API.replace(':username', playerName);
     return firstValueFrom(this.http.get<PlayerGains>(url, options));
+  }
+
+  getPlayerDetails(playerName: string): Promise<PlayerDetails> {
+    const options = {
+      headers: new HttpHeaders().set('x-api-key', API_KEY), 
+      params: new HttpParams().set('username', playerName),
+    }
+    const url = API_BASE + PLAYER_DETAILS.replace(':username', playerName);
+    return firstValueFrom(this.http.get<PlayerDetails>(url, options));
   }
 
   updatePlayer(playerName: string): Promise<PlayerDetails> {

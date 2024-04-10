@@ -14,4 +14,8 @@ export class HeaderComponent {
   navigateHome() {
     this.router.navigate(['/home']);
   }
+
+  navigateCompareEHB() {
+    this.router.navigate(['/compare-ehb']);
+  }
 }

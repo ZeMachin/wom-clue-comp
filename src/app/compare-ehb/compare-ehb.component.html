@@ -1,0 +1,75 @@
+<p-button pRipple (onClick)="onDisplayStats()">Display Stats</p-button>
+
+<div *ngIf="!displayStats">
+    <div [style]="{margin: '30px'}">
+        <input [(ngModel)]="newTeamName" pInputText type="text" placeholder="New Team Name"
+            (keydown.enter)="onAddNewTeam()">
+        <p-button icon="pi pi-plus" (onClick)="onAddNewTeam()"></p-button>
+    </div>
+    <div class="teams">
+        <div *ngFor="let team of teams" class="team">
+            <div>
+                <h3>{{team.name}}</h3>
+                <!-- <p-button icon="pi pi-trash" (onClick)="onDeleteTeam(team)"></p-button> -->
+            </div>
+            <input pInputText type="text" placeholder="New Team Member Name"
+                (keydown.enter)="onAddNewTeamMember(team, $event)">
+            <div class="members">
+                <input *ngFor="let member of team.members" [value]="member" pInputText type="text" (keydown.enter)="saveMember(team, member, $event)">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <div *ngIf="displayStats && teamsHavePlayers()"> -->
+<div *ngIf="displayStats">
+    <h2>Stats</h2>
+    <p-table #dt [value]="teams" dataKey="name" [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[5,10,25,50]"
+        [paginator]="true" [rows]="10" [loading]="loading">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 5rem"></th>
+                <th>Team Name</th>
+                <th>Total EHB</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-team let-expanded="expanded">
+            <tr>
+                <td>
+                    <button type="button" pButton pRipple [pRowToggler]="team"
+                        class="p-button-text p-button-rounded p-button-plain"
+                        [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                </td>
+                <td>{{ team.name }}</td>
+                <td>{{ getTotalTeamEHB(team) }}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="rowexpansion" let-team>
+            <tr>
+                <td colspan="6">
+                    <div class="p-3">
+                        <p-table [value]="team.players">
+                            <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="username">Name<p-sortIcon field="username"></p-sortIcon></th>
+                <th pSortableColumn="ehb">EHB<p-sortIcon field="ehb"></p-sortIcon></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-player>
+            <tr>
+                <td>{{ player.username }}</td>
+                <td>{{ player.ehb }}</td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="6">No players found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+</td>
+</tr>
+</ng-template>
+</p-table>
+</div>

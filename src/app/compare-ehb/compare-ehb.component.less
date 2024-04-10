@@ -1,0 +1,17 @@
+.teams {
+    margin: 30px;
+    display: flex;
+    flex-direction: row;
+
+    .team {
+        &:not(:first-child) {
+            margin-left: 10px;
+        }
+
+        .members {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+    }
+}

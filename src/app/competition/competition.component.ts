@@ -12,7 +12,7 @@ import { Table } from 'primeng/table';
 import { Dialog } from 'primeng/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
 
-const PLAYER_UPDATE_DELAY = 4; // Minimum of hours to wait between two player updates
+const PLAYER_UPDATE_DELAY = 0; // Minimum of hours to wait between two player updates
 const NUMBER_PLAYERS_UPDATE = 450; // Number of players that will be updated. 
 
 @Component({
@@ -116,7 +116,7 @@ export class CompetitionComponent implements OnInit {
       const metricsLength = this.metrics ? this.metrics.length : 0;
       const sortedFilteredList = updateList.filter((h) => differenceInHours(Date.now(), h.lastUpdated) >= PLAYER_UPDATE_DELAY).sort((h1, h2) => this.sortLastUpdated(h1, h2)).slice(0, NUMBER_PLAYERS_UPDATE - metricsLength * 2 - 3); // Filters out players that have been updated less than $PLAYER_UPDATE_DELAY hours ago, and sorts them by last updated
       // While waiting for the API key, number has to be < 100 - 2 * # of metrics
-      console.log('sortedFilteredList', sortedFilteredList);
+      // console.log('sortedFilteredList', sortedFilteredList);
       for(let hiscore of sortedFilteredList) 
         if(!await this.updatePlayer(hiscore)) break;
       await this.getUpdatedStats().then(
