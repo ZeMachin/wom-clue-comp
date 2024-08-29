@@ -11,6 +11,8 @@ import { PlayerDetails } from '../models/player.model';
 import { Table } from 'primeng/table';
 import { Dialog } from 'primeng/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { UpdatePlayersModalComponent } from './update-players-modal/update-players-modal.component';
 
 const PLAYER_UPDATE_DELAY = 0; // Minimum of hours to wait between two player updates
 const NUMBER_PLAYERS_UPDATE = 450; // Number of players that will be updated. 
@@ -24,6 +26,8 @@ export class CompetitionComponent implements OnInit {
   @ViewChild('dt') table!: Table;
   @ViewChild('categorydialog') categoryDialog!: Dialog;
   @ViewChild('playernamedialog') playerNameDialog!: Dialog;
+    
+  ref: DynamicDialogRef | undefined;
 
   competitionId: number = 0;
   metrics?: {name: string, weight: number}[];
@@ -44,7 +48,8 @@ export class CompetitionComponent implements OnInit {
   constructor(
     private WOMService: WiseOldManService, 
     private activatedRoute: ActivatedRoute,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private dialogService: DialogService
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -132,6 +137,21 @@ export class CompetitionComponent implements OnInit {
         }
       );
     }
+  }
+
+  openUpdatePlayersModal() {
+    this.ref = this.dialogService.open(UpdatePlayersModalComponent, { header: 'Update all players'});
+    this.ref.onClose.subscribe((correct: boolean) => {
+      if(correct) {
+        this.messageService.clear();
+        this.updatePlayers();
+      } else this.messageService.add({
+        severity: 'error', 
+        summary: 'Unlucky', 
+        detail: `Incorrect password.`,
+        life: 30000
+      })
+    })
   }
 
   async updatePlayer(hiscore: HiScore): Promise<boolean> {

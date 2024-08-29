@@ -2,10 +2,13 @@
   display: flex;
   align-content: center;
   flex-direction: row;
+  justify-content: space-between;
   width: 100%;
   .title {
+    width: 100%;
     display: flex;
     flex-direction: row;
+    justify-content: start;
     > * {
       margin-left: 1em;
     }
@@ -14,7 +17,7 @@
       // margin-left: auto;
       // margin-right: auto;
       width: fit-content;
-      background-color: #1e1e1e;
+      // background-color: #1e1e1e;
       // font-family: lato;
       font-size: 1.3em;
       padding: 0.75em;
@@ -34,11 +37,12 @@
   }
   
   .button-container {
-    display: block;
-    margin: auto;
-    margin-top: 1.5em;
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    margin-top: 1.5em;
+    margin-right: 2em;
+    display: flex;
+    justify-content: end;
     width: 120px;
     user-select: none;
     button {

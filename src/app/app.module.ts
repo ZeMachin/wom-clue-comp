@@ -17,6 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { PrimengModule } from './shared/primeng.module';
 import { FooterComponent } from './footer/footer.component';
 import { CompareEhbComponent } from './compare-ehb/compare-ehb.component';
+import { UpdatePlayersModalComponent } from './competition/update-players-modal/update-players-modal.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { CompareEhbComponent } from './compare-ehb/compare-ehb.component';
     HomeComponent,
     CompetitionComponent,
     FooterComponent,
-    CompareEhbComponent
+    CompareEhbComponent,
+    UpdatePlayersModalComponent
   ],
   imports: [
     BrowserModule,

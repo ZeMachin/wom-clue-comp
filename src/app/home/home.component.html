@@ -26,7 +26,8 @@
                         <span class="p-inputgroup-addon">
                             <i class="pi pi-wrench"></i>
                         </span>
-                        <p-inputNumber inputId="integeronly" formControlName="weight"></p-inputNumber>
+                        <p-inputNumber mode="decimal" formControlName="weight" [minFractionDigits]="0" 
+                        [maxFractionDigits]="3" ></p-inputNumber>
                     </div>
                     <p-button icon="pi pi-trash" (onClick)="onDeleteMetric(i)"></p-button>
                 </div> 

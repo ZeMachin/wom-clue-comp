@@ -23,7 +23,7 @@ import { DividerModule } from 'primeng/divider';
 import { DockModule } from 'primeng/dock';
 import { DragDropModule } from 'primeng/dragdrop';
 import { DropdownModule } from 'primeng/dropdown';
-import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { FieldsetModule } from 'primeng/fieldset';
 import { FileUploadModule } from 'primeng/fileupload';
 import { GalleriaModule } from 'primeng/galleria';
@@ -177,6 +177,6 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
     CardModule,
     ConfirmPopupModule
   ],
-   providers: [ MessageService, ConfirmationService ]
+   providers: [ MessageService, ConfirmationService, DialogService ]
 })
 export class PrimengModule { }

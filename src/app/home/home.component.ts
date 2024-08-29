@@ -18,10 +18,14 @@ export class HomeComponent {
       { 
         competitionId: [31221],
         metrics: fb.array([
-          fb.group({name: ['vardorvis'], weight: [0.6]}),
-          fb.group({name: ['duke_sucellus'], weight: [0.8]}),
-          fb.group({name: ['the_leviathan'], weight:  [1]}),
-          fb.group({name: ['the_whisperer'], weight: [1.15]}),
+          fb.group({name: ['slayer'], weight: [0.001]}),
+          fb.group({name: ['grotesque_guardians'], weight: [2.08]}),
+          fb.group({name: ['abyssal_sire'], weight: [2]}),
+          fb.group({name: ['kraken'], weight: [1.2]}),
+          fb.group({name: ['cerberus'], weight: [0.96]}),
+          fb.group({name: ['araxxor'], weight: [1.43]}),
+          fb.group({name: ['thermonuclear_smoke_devil'], weight:  [0.625]}),
+          fb.group({name: ['alchemical_hydra'], weight: [2]}),
         ])  
       }
     );

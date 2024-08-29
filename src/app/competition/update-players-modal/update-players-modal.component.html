@@ -1,0 +1,7 @@
+<div class="form">
+    <span>Type the password to update all players progress</span>
+    <input type="text" pInputText [(ngModel)]="password" type="password" (keyup.enter)="submit()"/>
+    <div class="button">
+        <p-button label="Submit" [disabled]="!password" (click)="submit()"></p-button>
+    </div>
+</div>
