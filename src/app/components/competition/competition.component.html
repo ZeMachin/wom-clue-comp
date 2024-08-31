@@ -1,35 +1,47 @@
 <div class="header">
     <div class="title">
-        <a [href]="'https://wiseoldman.net/competitions/' + competitionId" target="_blank"><h2>{{title}}</h2></a>
+        <a [href]="'https://wiseoldman.net/competitions/' + competitionId" target="_blank">
+            <h2>{{title}}</h2>
+        </a>
     </div>
     <div class="button-container">
         <button (click)="openUpdatePlayersModal()" [disabled]="updating">Update all players</button>
     </div>
 </div>
 <p-toast></p-toast>
-<p-dropdown *ngIf="brackets" [options]="brackets" 
-[(ngModel)]="bracketFilter" 
-optionLabel="name" 
-placeholder="Select a Bracket"
-(onChange)="onBracketSelection($event)"></p-dropdown>
-<p-table #dt [value]="hiscores" [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[5,10,25,50]" [paginator]="true" [rows]="10" [loading]="!hiscores.length">
+<!-- BRACKET FILTER -->
+<div>
+    <label for="bracket-filter">Bracket filter</label>
+    <p-dropdown *ngIf="brackets" [options]="brackets" [(ngModel)]="bracketFilter" optionLabel="name"
+        placeholder="Select a Bracket" (onChange)="onBracketSelection($event)" [showClear]="true"
+        (onClear)="clearBracketFilter()" id="bracket-filter">
+    </p-dropdown>
+</div>
+<p-table #dt [value]="filteredHiscores" [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[5,10,25,50]"
+    [paginator]="true" [rows]="10" [loading]="!hiscores.length">
     <ng-template pTemplate="header">
         <tr>
             <th>Position
             </th>
-            <th>Category 
+            <th>Category
                 <i class="pi pi-filter filter-btn" (click)="showCategoryFilter($event)"></i>
                 <p-dialog #categorydialog [(visible)]="categoryFilterVisible" [draggable]="false" [resizable]="false">
-                    <p-dropdown [(ngModel)]="categoryFilter" [options]="categoryOptions" (onChange)="onCategoryFilterChange($event)" [showClear]="true" placeholder="Select a category" appendTo="body"></p-dropdown>
+                    <p-dropdown [(ngModel)]="categoryFilter" [options]="categoryOptions"
+                        (onChange)="onCategoryFilterChange($event)" [showClear]="true" placeholder="Select a category"
+                        appendTo="body"></p-dropdown>
                 </p-dialog>
             </th>
             <th>Player
                 <i class="pi pi-filter filter-btn" (click)="showPlayerNameFilter($event)"></i>
-                <p-dialog #playernamedialog [(visible)]="playerNameFilterVisible" [draggable]="false" [resizable]="false">
-                    <input [(ngModel)]="playerNameFilter" pInputText type="text" (ngModelChange)="onPlayerNameFilterChange($event)" placeholder="Player name">
-                </p-dialog></th>
+                <p-dialog #playernamedialog [(visible)]="playerNameFilterVisible" [draggable]="false"
+                    [resizable]="false">
+                    <input [(ngModel)]="playerNameFilter" pInputText type="text"
+                        (ngModelChange)="onPlayerNameFilterChange($event)" placeholder="Player name">
+                </p-dialog>
+            </th>
             <th pSortableColumn="gains.total">Total Points<p-sortIcon field="gains.total"></p-sortIcon></th>
-            <th *ngFor="let metric of metrics" [pSortableColumn]="'gains.' + metric.name">{{formatTitle(metric.name)}}<p-sortIcon [field]="'gains.' + metric.name"></p-sortIcon></th>
+            <th *ngFor="let metric of metrics" [pSortableColumn]="'gains.' + metric.name">
+                {{formatTitle(metric.name)}}<p-sortIcon [field]="'gains.' + metric.name"></p-sortIcon></th>
             <th>Last Updated</th>
             <th></th>
         </tr>

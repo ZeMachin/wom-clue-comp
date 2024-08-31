@@ -14,6 +14,7 @@ interface CompetitionParticipation extends Participation {
 
 export interface CompetitionParticipationDetails extends CompetitionParticipation {
   progress: CompetitionProgress;
+  levels?: CompetitionProgress;
 }
 
 export interface CompetitionProgress {

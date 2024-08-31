@@ -14,6 +14,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { UpdatePlayersModalComponent } from './update-players-modal/update-players-modal.component';
 import { Bracket } from 'src/app/models/bracket.model';
+import { Skill } from 'src/app/models/metric.model';
 
 const PLAYER_UPDATE_DELAY = 0; // Minimum of hours to wait between two player updates
 const NUMBER_PLAYERS_UPDATE = 450; // Number of players that will be updated. 
@@ -34,6 +35,7 @@ export class CompetitionComponent implements OnInit {
   metrics?: {name: string, weight: number}[];
   brackets?: Bracket[];
   hiscores: HiScore[] = [];
+  filteredHiscores: HiScore[] = [];
   title: string = 'No competition at this time';
   updating: boolean = false;
   categoryOptions = [
@@ -64,6 +66,7 @@ export class CompetitionComponent implements OnInit {
     if(brackets !== null)
       this.brackets = JSON.parse(brackets).map((b: any) => new Bracket(b));
     this.hiscores = await this.getUpdatedStats();
+    this.filteredHiscores = this.hiscores;
   }
 
   async getUpdatedStats(filter: boolean = true): Promise<HiScore[]> {
@@ -79,7 +82,7 @@ export class CompetitionComponent implements OnInit {
       if(this.metrics) {
         const competitions: any = {};
         for (const metric of this.metrics)
-          competitions[metric.name as keyof typeof competitions] = await this.WOMService.getCompetition(this.competitionId, metric.name)
+          competitions[metric.name as keyof typeof competitions] = await this.WOMService.getCompetition(this.competitionId, metric.name);
         Object.keys(competitions).forEach((k) => 
           hiscores.forEach(h => {
             const participation = (competitions[k as keyof typeof competitions] as CompetitionDetails)?.participations.find((participation) => participation.playerId === h.playerId);
@@ -240,10 +243,44 @@ export class CompetitionComponent implements OnInit {
     this.playerNameDialog.style = {position: 'absolute', top: event.pageY , left: event.pageX};
   }
 
-  onBracketSelection(event: any) {
-    // console.log('on bracket selection event:', event);
-    console.log('hiscores:', this.hiscores)
-    // get participations for the bracket metric
-    // filter participants based on participation.levels.start
+  async onBracketSelection(event: any) {
+    console.log('on bracket selection event:', event);
+    const bracket: Bracket = event.value;
+    console.log('hiscores:', this.hiscores);
+
+    let filteredIds: number[] = this.hiscores.map((h) => h.playerId);
+
+    // If metric is a skill
+    if(bracket.metric && (bracket.higherBoundary || bracket.lowerBoundary)) {
+      if( Object.values(Skill).includes(bracket.metric.toString())) {                            
+        const competition = await this.WOMService.getCompetition(this.competitionId, bracket.metric.toString());
+        filteredIds = competition.participations.filter((p) => this.filterBoundary(p.levels?.start!, bracket.higherBoundary, bracket.lowerBoundary)).map((p) => p.playerId); // Assuming we get a level if the metric is a Skill
+      } else {
+        const competition = await this.WOMService.getCompetition(this.competitionId, bracket.metric.toString());
+        filteredIds = competition.participations.filter((p) => this.filterBoundary(p.progress?.start!, bracket.higherBoundary, bracket.lowerBoundary)).map((p) => p.playerId);
+      }
+    }
+
+    if(bracket.playerTypes && bracket.playerTypes.length > 0) {
+      const hiscoresFilteredIds = this.hiscores.filter((h) => bracket.playerTypes?.includes(h.category)).map((h) => h.playerId);
+      filteredIds = filteredIds.filter((id) => hiscoresFilteredIds.includes(id));
+    }
+
+    this.filteredHiscores = this.hiscores.filter((h) => filteredIds.includes(h.playerId));
+    console.log('filtered hiscores:', this.filteredHiscores);
+  }
+  
+  clearBracketFilter() {
+    this.filteredHiscores = this.hiscores;
+  }
+
+  filterBoundary(start: number, higherBoundary?: number, lowerBoundary?: number) {
+    if(higherBoundary && lowerBoundary)
+      return higherBoundary >= start && lowerBoundary <= start;
+    else if(higherBoundary)
+      return higherBoundary >= start;
+    else if(lowerBoundary)
+      return lowerBoundary <= start;
+    return true;
   }
 }
