@@ -16,7 +16,7 @@ export class HomeComponent {
   constructor(private fb: FormBuilder, private router: Router) {
     this.form = fb.group(
       { 
-        competitionId: [31221],
+        competitionId: [63053],
         metrics: fb.array([
           fb.group({name: ['slayer'], weight: [0.001]}),
           fb.group({name: ['grotesque_guardians'], weight: [2.08]}),
