@@ -87,6 +87,7 @@ import { BlockUIModule } from 'primeng/blockui';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { FloatLabelModule } from 'primeng/floatlabel';
 
 @NgModule({
   exports: [
@@ -175,7 +176,8 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
     TreeTableModule,
     AnimateModule,
     CardModule,
-    ConfirmPopupModule
+    ConfirmPopupModule,
+    FloatLabelModule
   ],
    providers: [ MessageService, ConfirmationService, DialogService ]
 })

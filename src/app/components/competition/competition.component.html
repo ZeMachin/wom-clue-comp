@@ -10,13 +10,14 @@
 </div>
 <p-toast></p-toast>
 <!-- BRACKET FILTER -->
-<div>
-    <label for="bracket-filter">Bracket filter</label>
+<p-floatLabel>
     <p-dropdown *ngIf="brackets" [options]="brackets" [(ngModel)]="bracketFilter" optionLabel="name"
         placeholder="Select a Bracket" (onChange)="onBracketSelection($event)" [showClear]="true"
-        (onClear)="clearBracketFilter()" id="bracket-filter">
+        (onClear)="clearBracketFilter()" id="bracket-filter" styleClass="ml-4">
     </p-dropdown>
-</div>
+    <label for="bracket-filter" class="ml-4">Bracket filter</label>
+</p-floatLabel>
+<br>
 <p-table #dt [value]="filteredHiscores" [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[5,10,25,50]"
     [paginator]="true" [rows]="10" [loading]="!hiscores.length">
     <ng-template pTemplate="header">
