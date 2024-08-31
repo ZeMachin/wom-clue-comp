@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Player, PlayerDetails } from '../models/player.model';
-import { WiseOldManService } from '../services/wise-old-man/wise-old-man.service';
+import { Player, PlayerDetails } from '../../models/player.model';
+import { WiseOldManService } from '../../services/wise-old-man/wise-old-man.service';
 
 @Component({
   selector: 'app-compare-ehb',

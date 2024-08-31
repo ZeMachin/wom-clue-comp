@@ -6,18 +6,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
+import { HeaderComponent } from './components/generic/header/header.component';
 import { HomeComponent } from './home/home.component';
-import { CompetitionComponent } from './competition/competition.component';
+import { CompetitionComponent } from './components/competition/competition.component';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 
 import { PrimengModule } from './shared/primeng.module';
-import { FooterComponent } from './footer/footer.component';
-import { CompareEhbComponent } from './compare-ehb/compare-ehb.component';
-import { UpdatePlayersModalComponent } from './competition/update-players-modal/update-players-modal.component';
+import { FooterComponent } from './components/generic/footer/footer.component';
+import { CompareEhbComponent } from './components/compare-ehb/compare-ehb.component';
+import { UpdatePlayersModalComponent } from './components/competition/update-players-modal/update-players-modal.component';
 
 
 @NgModule({
