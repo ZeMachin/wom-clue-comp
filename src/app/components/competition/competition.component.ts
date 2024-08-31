@@ -239,4 +239,11 @@ export class CompetitionComponent implements OnInit {
     this.playerNameFilterVisible = !this.playerNameFilterVisible;
     this.playerNameDialog.style = {position: 'absolute', top: event.pageY , left: event.pageX};
   }
+
+  onBracketSelection(event: any) {
+    // console.log('on bracket selection event:', event);
+    console.log('hiscores:', this.hiscores)
+    // get participations for the bracket metric
+    // filter participants based on participation.levels.start
+  }
 }

@@ -9,12 +9,13 @@
             <h2>Metrics</h2>
         </div>
         <div class="headers grid">
-            <h3 class="col-4">Names</h3>
-            <h3 class="col-6">Weights</h3>
+            <h3 class="col-4">Name</h3>
+            <h3 class="col-6">Weight</h3>
         </div>
         <div formArrayName="metrics" class="metrics grid">
             <div *ngFor="let metricForm of metrics.controls; let i = index">
                 <div class="metric-row" [formGroupName]="i">
+                    <!-- METRIC -->
                     <p-dropdown [options]="metricOptions" placeholder="Select a Metric" [group]="true"
                         formControlName="name" class="col-4" [style]="{'width': '100%'}"
                         emptyFilterMessage="No metric found." (onFilter)="onFilter($event)">
@@ -28,6 +29,7 @@
                             {{formatTitle(item)}}
                         </ng-template>
                     </p-dropdown>
+                    <!-- WEIGHT -->
                     <div class="p-inputgroup weight">
                         <span class="p-inputgroup-addon">
                             <i class="pi pi-wrench"></i>
@@ -48,55 +50,43 @@
         </div>
         <div class="headers grid">
             <h3 class="col-3">Player Types</h3>
-            <h3 class="col-4">Lower Boundary</h3>
-            <h3 class="col-4">Higher Boundary</h3>
+            <h3 class="col-4">Metric</h3>
+            <h3 class="col-2">Lower Boundary</h3>
+            <h3 class="col-2">Higher Boundary</h3>
         </div>
         <div formArrayName="brackets" class="brackets grid">
             <div *ngFor="let bracketForm of brackets.controls; let i = index">
                 <div class="bracket-row" [formGroupName]="i">
+                    <!-- PLAYER TYPES -->
                     <p-multiSelect [options]="playerTypeOptions" formControlName="playerTypes"
                         placeholder="Select Player Types" class="col-3" styleClass="w-12" [filter]="false" />
-                    <div formGroupName="lowerBoundary" class="flex justify-content-between col-4">
-                        <p-dropdown [options]="metricOptions" placeholder="Select a Low Boundary Metric" [group]="true"
-                            formControlName="metric" class="col-7" [style]="{'width': '100%'}"
-                            emptyFilterMessage="No metric found." (onFilter)="onFilter($event)" [showClear]="true">
-                            <ng-template let-group pTemplate="group">
-                                {{group.label}}
-                            </ng-template>
-                            <ng-template let-item pTemplate="item">
-                                {{formatTitle(item)}}
-                            </ng-template>
-                            <ng-template let-item pTemplate="selectedItem">
-                                {{formatTitle(item)}}
-                            </ng-template>
-                        </p-dropdown>
-                        <div class="p-inputgroup level col-4">
-                            <span class="p-inputgroup-addon">
-                                <i class="pi pi-chart-bar"></i>
-                            </span>
-                            <p-inputNumber formControlName="number" [min]="0"></p-inputNumber>
-                        </div>
+                    <!-- METRIC -->
+                    <p-dropdown [options]="metricOptions" placeholder="Select a Metric" [group]="true"
+                        formControlName="metric" class="col-4" [style]="{'width': '100%'}"
+                        emptyFilterMessage="No metric found." (onFilter)="onFilter($event)" [showClear]="true">
+                        <ng-template let-group pTemplate="group">
+                            {{group.label}}
+                        </ng-template>
+                        <ng-template let-item pTemplate="item">
+                            {{formatTitle(item)}}
+                        </ng-template>
+                        <ng-template let-item pTemplate="selectedItem">
+                            {{formatTitle(item)}}
+                        </ng-template>
+                    </p-dropdown>
+                    <!-- LOWER BOUNDARY -->
+                    <div class="p-inputgroup level col-2">
+                        <span class="p-inputgroup-addon">
+                            <i class="pi pi-chart-bar"></i>
+                        </span>
+                        <p-inputNumber formControlName="lowerBoundary" [min]="0"></p-inputNumber>
                     </div>
-                    <div formGroupName="higherBoundary" class="flex justify-content-between col-4 "> 
-                        <p-dropdown [options]="metricOptions" placeholder="Select a High Boundary Metric" [group]="true"
-                            formControlName="metric" class=" col-7" [style]="{'width': '100%'}"
-                            emptyFilterMessage="No metric found." (onFilter)="onFilter($event)" [showClear]="true">
-                            <ng-template let-group pTemplate="group">
-                                {{group.label}}
-                            </ng-template>
-                            <ng-template let-item pTemplate="item">
-                                {{formatTitle(item)}}
-                            </ng-template>
-                            <ng-template let-item pTemplate="selectedItem">
-                                {{formatTitle(item)}}
-                            </ng-template>
-                        </p-dropdown>
-                        <div class="p-inputgroup level col-4">
-                            <span class="p-inputgroup-addon">
-                                <i class="pi pi-chart-bar"></i>
-                            </span>
-                            <p-inputNumber formControlName="number" [min]="0"></p-inputNumber>
-                        </div>
+                    <!-- HIGHER BOUNDARY -->
+                    <div class="p-inputgroup level col-2">
+                        <span class="p-inputgroup-addon">
+                            <i class="pi pi-chart-bar"></i>
+                        </span>
+                        <p-inputNumber formControlName="higherBoundary" [min]="0"></p-inputNumber>
                     </div>
                     <p-button icon="pi pi-trash" (onClick)="onDeleteBracket(i)"></p-button>
                 </div>

@@ -1,6 +1,6 @@
 <div class="header">
     <div class="title">
-        <h2>{{title}}</h2>
+        <a [href]="'https://wiseoldman.net/competitions/' + competitionId" target="_blank"><h2>{{title}}</h2></a>
     </div>
     <div class="button-container">
         <button (click)="openUpdatePlayersModal()" [disabled]="updating">Update all players</button>
@@ -10,7 +10,8 @@
 <p-dropdown *ngIf="brackets" [options]="brackets" 
 [(ngModel)]="bracketFilter" 
 optionLabel="name" 
-placeholder="Select a Bracket"></p-dropdown>
+placeholder="Select a Bracket"
+(onChange)="onBracketSelection($event)"></p-dropdown>
 <p-table #dt [value]="hiscores" [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[5,10,25,50]" [paginator]="true" [rows]="10" [loading]="!hiscores.length">
     <ng-template pTemplate="header">
         <tr>

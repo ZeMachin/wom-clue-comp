@@ -33,36 +33,21 @@ export class HomeComponent {
         brackets: fb.array([
           fb.group({
             playerTypes: [[]],
-            higherBoundary: fb.group({
-              metric: [],
-              number: 0
-            }),
-            lowerBoundary: fb.group({
-              metric: ['slayer'],
-              number: 95
-            }),
+            metric: ['slayer'],
+            higherBoundary: 0,
+            lowerBoundary: 95
           }),
           fb.group({
             playerTypes: [[]],
-            higherBoundary: fb.group({
-              metric: ['slayer'],
-              number: 95
-            }),
-            lowerBoundary: fb.group({
-              metric: ['slayer'],
-              number: 75
-            }),
+            metric: ['slayer'],
+            higherBoundary: 95,
+            lowerBoundary: 75
           }),
           fb.group({
             playerTypes: [[]],
-            higherBoundary: fb.group({
-              metric: ['slayer'],
-              number: 75
-            }),
-            lowerBoundary: fb.group({
-              metric: [],
-              number: 0
-            }),
+            metric: ['slayer'],
+            higherBoundary: 75,
+            lowerBoundary: 0
           })
         ])
       }
@@ -124,14 +109,9 @@ export class HomeComponent {
   onAddBracket() {
     const bracketForm = this.fb.group({
       playerTypes: [],
-      lowerBoundary: this.fb.group({
-        metric: [''],
-        number: [0]
-      }),
-      higherBoundary: this.fb.group({
-        metric: [''],
-        number: [0]
-      })
+      metric: [''],
+      higherBoundary: 0,
+      lowerBoundary: 0
     });
 
     this.brackets.push(bracketForm);
