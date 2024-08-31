@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -20,28 +20,21 @@ import { CompareEhbComponent } from './components/compare-ehb/compare-ehb.compon
 import { UpdatePlayersModalComponent } from './components/competition/update-players-modal/update-players-modal.component';
 
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    HeaderComponent,
-    HomeComponent,
-    CompetitionComponent,
-    FooterComponent,
-    CompareEhbComponent,
-    UpdatePlayersModalComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    MatButtonModule,
-    MatIconModule,
-    MatInputModule,
-    PrimengModule,
-    ReactiveFormsModule,
-    BrowserAnimationsModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        HeaderComponent,
+        HomeComponent,
+        CompetitionComponent,
+        FooterComponent,
+        CompareEhbComponent,
+        UpdatePlayersModalComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        MatButtonModule,
+        MatIconModule,
+        MatInputModule,
+        PrimengModule,
+        ReactiveFormsModule,
+        BrowserAnimationsModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }
