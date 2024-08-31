@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormArray, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormArray, FormGroup } from '@angular/forms';
 import { NavigationExtras, Router } from '@angular/router';
 import { Activity, Boss, ComputedMetrics, Skill } from '../models/metric.model';
 import { SelectItem, SelectItemGroup } from 'primeng/api';
+import { PlayerType } from '../models/player.model';
+import { Bracket } from '../models/bracket.model';
 
 @Component({
   selector: 'app-home',
@@ -12,6 +14,7 @@ import { SelectItem, SelectItemGroup } from 'primeng/api';
 export class HomeComponent {
   form!: FormGroup;
   metricOptions: SelectItemGroup[] = [];
+  playerTypeOptions: SelectItem[] = [];
 
   constructor(private fb: FormBuilder, private router: Router) {
     this.form = fb.group(
@@ -26,10 +29,46 @@ export class HomeComponent {
           fb.group({name: ['araxxor'], weight: [1.43]}),
           fb.group({name: ['thermonuclear_smoke_devil'], weight:  [0.625]}),
           fb.group({name: ['alchemical_hydra'], weight: [2]}),
-        ])  
+        ]),
+        brackets: fb.array([
+          fb.group({
+            playerTypes: [[]],
+            higherBoundary: fb.group({
+              metric: [],
+              number: 0
+            }),
+            lowerBoundary: fb.group({
+              metric: ['slayer'],
+              number: 95
+            }),
+          }),
+          fb.group({
+            playerTypes: [[]],
+            higherBoundary: fb.group({
+              metric: ['slayer'],
+              number: 95
+            }),
+            lowerBoundary: fb.group({
+              metric: ['slayer'],
+              number: 75
+            }),
+          }),
+          fb.group({
+            playerTypes: [[]],
+            higherBoundary: fb.group({
+              metric: ['slayer'],
+              number: 75
+            }),
+            lowerBoundary: fb.group({
+              metric: [],
+              number: 0
+            }),
+          })
+        ])
       }
     );
     this.loadMetricOptions();
+    this.loadPlayerTypeOptions();
   }
 
   loadMetricOptions() {
@@ -53,8 +92,12 @@ export class HomeComponent {
     ]
   }
 
+  loadPlayerTypeOptions() {
+    this.playerTypeOptions = this.getValuesFromEnum(PlayerType);
+  }
+
   getValuesFromEnum(enumList: any): SelectItem[] {
-    return Object.values(enumList).filter((v) => typeof v === 'string') as SelectItem[];
+    return Object.values(enumList).filter((v) => typeof v === 'string') as unknown as SelectItem[];
   }
 
   get metrics() {
@@ -74,13 +117,38 @@ export class HomeComponent {
     this.metrics.removeAt(index);
   }
 
-  onSubmit() {
-    this.navigateToCompetition(this.form.get('competitionId')?.value, this.form.get('metrics')?.value);
+  get brackets() {
+    return this.form.get('brackets') as FormArray;
   }
 
-  navigateToCompetition(competitionId: number, metrics?: {name: string, weight: number}[]) {
+  onAddBracket() {
+    const bracketForm = this.fb.group({
+      playerTypes: [],
+      lowerBoundary: this.fb.group({
+        metric: [''],
+        number: [0]
+      }),
+      higherBoundary: this.fb.group({
+        metric: [''],
+        number: [0]
+      })
+    });
+
+    this.brackets.push(bracketForm);
+  }
+
+  onDeleteBracket(index: number) {
+    this.brackets.removeAt(index);
+  }
+
+  onSubmit() {
+    this.navigateToCompetition(this.form.get('competitionId')?.value, { metrics: this.metrics.value, brackets: this.brackets.value });
+  }
+
+  navigateToCompetition(competitionId: number, options?: {metrics?: { name: string, weight: number }[], brackets?: Bracket[]}) {
     const queryParams: any = {
-      metrics: JSON.stringify(metrics),
+      brackets: JSON.stringify(options?.brackets),
+      metrics: JSON.stringify(options?.metrics),
       competitionId: competitionId
     };
 

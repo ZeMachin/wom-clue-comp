@@ -4,14 +4,20 @@
             <label for="competitionId"><b>Competition ID</b></label>
             <p-inputNumber inputId="competitionId" formControlName="competitionId"></p-inputNumber>
         </div>
+        <!-- METRICS -->
+        <div class="headers">
+            <h2>Metrics</h2>
+        </div>
         <div class="headers grid">
-            <h3 class="col-4">Metrics</h3>
+            <h3 class="col-4">Names</h3>
             <h3 class="col-6">Weights</h3>
         </div>
         <div formArrayName="metrics" class="metrics grid">
             <div *ngFor="let metricForm of metrics.controls; let i = index">
                 <div class="metric-row" [formGroupName]="i">
-                    <p-dropdown [options]="metricOptions" placeholder="Select a Metric" [group]="true" formControlName="name" class="col-4" [style]="{'width': '100%'}" emptyFilterMessage="No metric found." (onFilter)="onFilter($event)">
+                    <p-dropdown [options]="metricOptions" placeholder="Select a Metric" [group]="true"
+                        formControlName="name" class="col-4" [style]="{'width': '100%'}"
+                        emptyFilterMessage="No metric found." (onFilter)="onFilter($event)">
                         <ng-template let-group pTemplate="group">
                             {{group.label}}
                         </ng-template>
@@ -26,13 +32,76 @@
                         <span class="p-inputgroup-addon">
                             <i class="pi pi-wrench"></i>
                         </span>
-                        <p-inputNumber mode="decimal" formControlName="weight" [minFractionDigits]="0" 
-                        [maxFractionDigits]="3" ></p-inputNumber>
+                        <p-inputNumber mode="decimal" formControlName="weight" [minFractionDigits]="0"
+                            [maxFractionDigits]="3"></p-inputNumber>
                     </div>
                     <p-button icon="pi pi-trash" (onClick)="onDeleteMetric(i)"></p-button>
-                </div> 
+                </div>
             </div>
             <p-button icon="pi pi-plus" (onClick)="onAddMetric()"></p-button>
+        </div>
+        <br>
+        <hr>
+        <!-- BRACKETS -->
+        <div class="headers">
+            <h2>Brackets</h2>
+        </div>
+        <div class="headers grid">
+            <h3 class="col-3">Player Types</h3>
+            <h3 class="col-4">Lower Boundary</h3>
+            <h3 class="col-4">Higher Boundary</h3>
+        </div>
+        <div formArrayName="brackets" class="brackets grid">
+            <div *ngFor="let bracketForm of brackets.controls; let i = index">
+                <div class="bracket-row" [formGroupName]="i">
+                    <p-multiSelect [options]="playerTypeOptions" formControlName="playerTypes"
+                        placeholder="Select Player Types" class="col-3" styleClass="w-12" [filter]="false" />
+                    <div formGroupName="lowerBoundary" class="flex justify-content-between col-4">
+                        <p-dropdown [options]="metricOptions" placeholder="Select a Low Boundary Metric" [group]="true"
+                            formControlName="metric" class="col-7" [style]="{'width': '100%'}"
+                            emptyFilterMessage="No metric found." (onFilter)="onFilter($event)" [showClear]="true">
+                            <ng-template let-group pTemplate="group">
+                                {{group.label}}
+                            </ng-template>
+                            <ng-template let-item pTemplate="item">
+                                {{formatTitle(item)}}
+                            </ng-template>
+                            <ng-template let-item pTemplate="selectedItem">
+                                {{formatTitle(item)}}
+                            </ng-template>
+                        </p-dropdown>
+                        <div class="p-inputgroup level col-4">
+                            <span class="p-inputgroup-addon">
+                                <i class="pi pi-chart-bar"></i>
+                            </span>
+                            <p-inputNumber formControlName="number" [min]="0"></p-inputNumber>
+                        </div>
+                    </div>
+                    <div formGroupName="higherBoundary" class="flex justify-content-between col-4 "> 
+                        <p-dropdown [options]="metricOptions" placeholder="Select a High Boundary Metric" [group]="true"
+                            formControlName="metric" class=" col-7" [style]="{'width': '100%'}"
+                            emptyFilterMessage="No metric found." (onFilter)="onFilter($event)" [showClear]="true">
+                            <ng-template let-group pTemplate="group">
+                                {{group.label}}
+                            </ng-template>
+                            <ng-template let-item pTemplate="item">
+                                {{formatTitle(item)}}
+                            </ng-template>
+                            <ng-template let-item pTemplate="selectedItem">
+                                {{formatTitle(item)}}
+                            </ng-template>
+                        </p-dropdown>
+                        <div class="p-inputgroup level col-4">
+                            <span class="p-inputgroup-addon">
+                                <i class="pi pi-chart-bar"></i>
+                            </span>
+                            <p-inputNumber formControlName="number" [min]="0"></p-inputNumber>
+                        </div>
+                    </div>
+                    <p-button icon="pi pi-trash" (onClick)="onDeleteBracket(i)"></p-button>
+                </div>
+            </div>
+            <p-button icon="pi pi-plus" (onClick)="onAddBracket()"></p-button>
         </div>
     </form>
     <p-button label="Submit" (onClick)="onSubmit()"></p-button>
