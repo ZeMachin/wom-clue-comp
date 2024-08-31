@@ -7,6 +7,10 @@
     </div>
 </div>
 <p-toast></p-toast>
+<p-dropdown *ngIf="brackets" [options]="brackets" 
+[(ngModel)]="bracketFilter" 
+optionLabel="name" 
+placeholder="Select a Bracket"></p-dropdown>
 <p-table #dt [value]="hiscores" [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[5,10,25,50]" [paginator]="true" [rows]="10" [loading]="!hiscores.length">
     <ng-template pTemplate="header">
         <tr>

@@ -13,6 +13,7 @@ import { Dialog } from 'primeng/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { UpdatePlayersModalComponent } from './update-players-modal/update-players-modal.component';
+import { Bracket } from 'src/app/models/bracket.model';
 
 const PLAYER_UPDATE_DELAY = 0; // Minimum of hours to wait between two player updates
 const NUMBER_PLAYERS_UPDATE = 450; // Number of players that will be updated. 
@@ -31,6 +32,7 @@ export class CompetitionComponent implements OnInit {
 
   competitionId: number = 0;
   metrics?: {name: string, weight: number}[];
+  brackets?: Bracket[];
   hiscores: HiScore[] = [];
   title: string = 'No competition at this time';
   updating: boolean = false;
@@ -40,6 +42,7 @@ export class CompetitionComponent implements OnInit {
     { label: 'HCIM', value: 'hardcore' },
     { label: 'UIM', value: 'ultimate' },
   ]
+  bracketFilter?: Bracket;
   categoryFilter?: { label: string, value: string };
   playerNameFilter?: string;
   categoryFilterVisible: boolean = false;
@@ -57,6 +60,9 @@ export class CompetitionComponent implements OnInit {
     const metrics = this.activatedRoute.snapshot.queryParamMap.get('metrics');
     if(metrics !== null)
       this.metrics = JSON.parse(metrics);
+    const brackets = this.activatedRoute.snapshot.queryParamMap.get('brackets');
+    if(brackets !== null)
+      this.brackets = JSON.parse(brackets).map((b: any) => new Bracket(b));
     this.hiscores = await this.getUpdatedStats();
   }
 
