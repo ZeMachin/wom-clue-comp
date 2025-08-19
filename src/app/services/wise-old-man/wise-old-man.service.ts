@@ -4,13 +4,14 @@ import { CompetitionDetails } from '../../models/competition.model';
 import { firstValueFrom } from 'rxjs'
 import { PlayerGains } from '../../models/player-gains.model';
 import { PlayerDetails } from 'src/app/models/player.model';
+import { environment } from 'src/environments/environment';
 
 const API_BASE = 'https://api.wiseoldman.net/v2';
 const COMPETITION_API = '/competitions/:id';
 const PLAYER_GAINS_API = '/players/:username/gained';
 const PLAYER_UPDATE_API = '/players/:username';
 const PLAYER_DETAILS = '/players/:username';
-const API_KEY = 'to0fe0auxjiypmnexhwme6eg';
+const API_KEY = environment.API_KEY;
 
 @Injectable({
   providedIn: 'root'
