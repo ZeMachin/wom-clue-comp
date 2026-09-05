@@ -19,36 +19,37 @@ export class HomeComponent {
   constructor(private fb: FormBuilder, private router: Router) {
     this.form = fb.group(
       { 
-        competitionId: [63053],
+        competitionId: [],
         metrics: fb.array([
-          fb.group({name: ['slayer'], weight: [0.001]}),
-          fb.group({name: ['grotesque_guardians'], weight: [2.08]}),
-          fb.group({name: ['abyssal_sire'], weight: [2]}),
-          fb.group({name: ['kraken'], weight: [1.2]}),
-          fb.group({name: ['cerberus'], weight: [0.96]}),
-          fb.group({name: ['araxxor'], weight: [1.43]}),
-          fb.group({name: ['thermonuclear_smoke_devil'], weight:  [0.625]}),
-          fb.group({name: ['alchemical_hydra'], weight: [2]}),
+          fb.group({name: [], weight: []}),
+          // fb.group({name: ['slayer'], weight: [0.001]}),
+          // fb.group({name: ['grotesque_guardians'], weight: [2.08]}),
+          // fb.group({name: ['abyssal_sire'], weight: [2]}),
+          // fb.group({name: ['kraken'], weight: [1.2]}),
+          // fb.group({name: ['cerberus'], weight: [0.96]}),
+          // fb.group({name: ['araxxor'], weight: [1.43]}),
+          // fb.group({name: ['thermonuclear_smoke_devil'], weight:  [0.625]}),
+          // fb.group({name: ['alchemical_hydra'], weight: [2]}),
         ]),
         brackets: fb.array([
-          fb.group({
-            playerTypes: [[]],
-            metric: ['slayer'],
-            higherBoundary: 0,
-            lowerBoundary: 95
-          }),
-          fb.group({
-            playerTypes: [[]],
-            metric: ['slayer'],
-            higherBoundary: 95,
-            lowerBoundary: 75
-          }),
-          fb.group({
-            playerTypes: [[]],
-            metric: ['slayer'],
-            higherBoundary: 75,
-            lowerBoundary: 0
-          })
+          // fb.group({
+          //   playerTypes: [[]],
+          //   metric: ['slayer'],
+          //   higherBoundary: 0,
+          //   lowerBoundary: 95
+          // }),
+          // fb.group({
+          //   playerTypes: [[]],
+          //   metric: ['slayer'],
+          //   higherBoundary: 95,
+          //   lowerBoundary: 75
+          // }),
+          // fb.group({
+          //   playerTypes: [[]],
+          //   metric: ['slayer'],
+          //   higherBoundary: 75,
+          //   lowerBoundary: 0
+          // })
         ])
       }
     );
